@@ -1,0 +1,813 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%% --> Paquetes adicionales
+\usepackage{multicol}
+\usepackage{marginnote}
+\usepackage{metalogo}
+\input{preambulo_material}
+
+% -- Datos del libro
+\nota{Guía 2}
+\tema{Formato de texto, listas, cajas, fuentes}
+
+%%--> Opciones adicionales
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+
+\tableofcontents
+
+\section{Introducción}
+
+\LaTeX{} tiene una filosofía de trabajo diferente a la de los procesadores de texto habituales\footnote{Conocidos como \textsf{WYSIWYG}, es decir, «lo que ves es lo que obtienes»} y se basa en comandos. Tradicionalmente, este aspecto se ha considerado una desventaja (probablemente la única). Sin embargo, a diferencia de los procesadores de texto de tipo \textsf{WYSIWYG}, permite a quien escribe un documento centrarse exclusivamente en el contenido, sin tener que preocuparse de los detalles del formato. En este sentido, tampoco requiere de un programa específico para la edición del código pues esta tarea puede ser realizada en cualquier editor de texto plano requiriendo únicamente el compilador apropiado para obtener el resultado deseado.
+
+\section{Escritura de texto}
+
+\subsection{Títulos, capítulos y secciones}
+
+\begin{advertencia}
+En general, se debe permitir que \LaTeX{} de el formato a los títulos y subtítulos mediante los comandos de sección, sub-sección, etc.
+\end{advertencia}
+
+\LaTeX{} permite dividir el documento en capítulos, secciones y subsecciones mediante órdenes especiales que toman el título de la sección como argumento.
+
+Las siguientes órdenes de división están disponibles para la clase \texttt{article}:
+\begin{itemize}
+\item \verb"\section{...}"
+\item \verb"\subsection{...}"
+\item \verb"\subsubsection{...}"
+\item \verb"\paragraph{...}"
+\item \verb"\subparagraph{...}"
+\end{itemize}
+
+Si se quiere dividir el documento en partes sin influir en la numeración de secciones o capítulos puede usar \verb|\part{...}|. Por otra parte, cuando se trabaje con las clases \texttt{report} o \texttt{book}, estará disponible una orden de sección adicional \verb|\chapter{...}|. En este caso, \LaTeX{} crea un índice general tomando los encabezados de sección y los números de página del último ciclo de compilación del documento.  La orden \verb"\tableofcontents" sitúa el índice general en el lugar en que se ejecuta la orden.  Un documento nuevo debe compilarse dos veces para conseguir un índice correcto\footnote{Esta aclaración es necesaria únicamente para procesos locales, es decir, cuando instalamos \LaTeX{} en nuestro computador. En el caso de \emph{Overleaf} el uso de ciertas herramientas internas hace que el documento se compile el número de veces que se requiera para obtener el documento completo.}
+Todas las órdenes de sección listadas anteriormente tienen una versión «estrella».  Se trata de órdenes con el mismo nombre pero seguido de
+un asterisco \verb|*|.  Generan encabezados de sección que no aparecen en el índice general y que no se numeran.
+
+
+\begin{advertencia}
+Una forma de revisar el contenido de la tabla de contenidos es verificar el archivo con extensión \texttt{.toc} este archivo contiene todas las entradas que serán utilizadas en el documento.
+\end{advertencia}
+
+Un ejemplo del contenido de este archivo lo podemos ver a continuación en el archivo \texttt{.toc} generado al compilar la presente guía.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.90\textwidth]{Imagenes/guia02_1.png}
+\end{figure}
+
+Normalmente, los encabezados aparecen en el índice general exactamente como se introducen en el texto.  No obstante, a veces esto no es posible, porque el encabezado es demasiado largo y no cabe en el índice general.  Por tanto, la entrada para el índice general puede indicarse como un argumento opcional antes del encabezado real.
+
+\begin{lstlisting}[frame=single]
+\chapter[Título para el índice general]{Título real del capítulo}
+\end{lstlisting}
+
+El \emph{título} de todo el documento se genera con la orden \verb"\maketitle". El contenido del título tiene que definirse mediante las órdenes
+ \begin{itemize}
+  \item \verb|\title{...}|,
+  \item \verb|\author{...}| y opcionalmente
+  \item \verb|\date{...}|
+ \end{itemize}
+antes de llamar a \verb|\maketitle|.  En el argumento de \verb"\author", puede poner varios nombres separados por órdenes \verb"\and".
+
+Además de las órdenes de sección ya explicadas, \LaTeXe{} tiene tres órdenes adicionales para usar con la clase \verb|book|, útiles
+para dividir la publicación.  Las órdenes alteran los encabezados de los capítulos y los números de página para que aparezcan como se ve en
+muchos libros:
+ \begin{itemize}
+  \item \verb|\frontmatter|: cambia la numeración de páginas a números romanos y las secciones no estarán numeradas.
+  \item \verb|\mainmatter|: activa los números de página arábigos y reinicia el contador de páginas.
+  \item \verb|\appendix|: tras esta orden los capítulos se numerarán con letras.
+  \item \verb|\backmatter|: no tiene efecto visual en las clases típicas.
+ \end{itemize}
+
+  \subsection{Referencias cruzadas}
+
+En libros, informes y artículos, hay a menudo \emph{referencias cruzadas} a figuras, cuadros y secciones especiales de texto, \LaTeX{} proporciona las siguientes órdenes para referenciar:
+ \begin{itemize}
+  \item \verb|\label{|\emph{marcador}\verb|}|,
+  \item \verb|\ref{|\emph{marcador}\verb|}| ,
+  \item \verb|\pageref{|\emph{marcador}\verb|}|
+ \end{itemize}
+donde \emph{marcador} es un identificador escogido por el usuario, \LaTeX{} remplaza \verb|\ref| por el número de la sección, subsección, figura, tabla o teorema tras el que se sitúa la orden \verb|\label| correspondiente. \verb|\pageref| imprime el número de página donde se encuentra el comando \verb|\label|.
+
+  \subsection{Notas al pie}
+
+Con la orden \verb|\footnote{|\emph{texto al pie}\verb|}| se imprime una nota al pie de la página actual.  Deben ponerse las notas tras la palabra u oración a la que se refieren. A continuación se encuentra un ejemplo sobre la generación de notas al pie:
+
+\begin{lstlisting}[frame=single]
+Aquí se va a generar una nota al pie.\footnote{Esta es la nota que hemos generado.}
+\end{lstlisting}
+
+\section{Listados}
+
+Las listas son elementos básicos en un documento, para generarlas en \LaTeX \hspace{1.5pt} existen dos ambientes. El uso de uno u otro ambiente depende de si la lista posee un orden o no.
+
+\subsection{Con orden}
+
+Para las listas que poseen un orden se usa el ambiente \verb"enumerate", este ambiente genera una lista que enumera con un orden específico, el esquema de orden por defecto es:
+
+\begin{itemize}
+    \item
+        Números arábigos (1, 2, 3, ...) para el nivel 1,
+    \item
+        letras minúsculas (a, b, c, ...) para el nivel 2,
+    \item
+        números romanos en minúscula (i, ii, iii, ...) para el nivel 3,
+    \item
+        letras mayúsculas (A, B, C, ...) para el nivel 4. 
+\end{itemize}
+
+Así, consideremos el siguiente ejemplo:
+
+\begin{lstlisting}[frame=single]
+ \begin{enumerate}
+   \item 
+        Item de primer nivel
+   \item
+        Item de primer nivel
+   \begin{enumerate}
+    \item
+        Segundo nivel item
+    \item
+        Segundo nivel item
+     \begin{enumerate}
+       \item Item de tercer nivel
+       \item Item de tercer nivel
+       \begin{enumerate}
+         \item Item de cuarto nivel
+         \item Item de cuarto nivel
+       \end{enumerate}
+     \end{enumerate}
+   \end{enumerate}
+ \end{enumerate}
+\end{lstlisting}
+
+produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+\begin{enumerate}
+   \item Item de primer nivel
+   \item Item de primer nivel
+   \begin{enumerate}
+     \item Item de segundo nivel
+     \item Item de segundo nivel
+     \begin{enumerate}[label=\roman*.]
+       \item Item de tercer nivel
+       \item Item de tercer nivel
+       \begin{enumerate}[label=\Alph*.]
+         \item Item de cuarto nivel
+         \item Item de cuarto nivel
+       \end{enumerate}
+     \end{enumerate}
+   \end{enumerate}
+ \end{enumerate}
+\end{minipage}
+} }
+\end{center}
+
+De igual manera, se tienen los siguientes ejemplos:
+
+\begin{lstlisting}[frame=single]
+\begin{enumerate}
+    \item
+        Primero
+    \item
+        Segundo
+    \item
+        Tercero
+        \begin{enumerate}
+        \item
+            Tercero, uno.
+        \item
+            Tercero, dos.
+        \end{enumerate}
+\end{enumerate}
+\end{lstlisting}
+
+produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+\begin{enumerate}
+    \item
+        Primero
+    \item
+        Segundo
+    \item
+        Tercero
+        \begin{enumerate}
+        \item
+            Tercero, uno.
+        \item
+            Tercero, dos.
+        \end{enumerate}
+\end{enumerate}
+\end{minipage}
+} }
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Sin orden}
+
+Para las listas que no tienen orden se usa el ambiente \verb"itemize", este ambiente genera una lista que enumera sin orden específico. Un ejemplo es:
+
+\begin{lstlisting}[frame=single]
+\begin{itemize}
+    \item 
+        Una cosa
+    \item 
+        Otra cosa
+\end{itemize}
+\end{lstlisting}
+
+produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+\begin{itemize}
+    \item 
+        Una cosa
+    \item 
+        Otra cosa
+\end{itemize}
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Nuevos formatos}
+
+\subsubsection{Formatos temporales}
+
+Adicionalmente, es posible crear numeraciones personalizadas usando los siguientes estilos disponibles:
+
+\begin{center}
+    \begin{tabular}{c|c}
+        Código & Descripción \\
+        \hline
+        \verb"\alph" & Letras en minúscula (a,b,$\ldots$)\\ 
+        \verb"\Alph" & Letras en Mayúscula (A,B,$\ldots$)\\
+        \verb"\arabic" & Números arábigos ($1,2,\ldots$)\\
+        \verb"\roman" & Números romanos en minúscula (i,ii,$\ldots$)\\
+        \verb"\Roman"   & Números romanos en Mayúscula (I,II,$\ldots$)
+    \end{tabular}
+\end{center}
+
+para definir el formato de numeración veamos el siguiente ejemplo:
+
+\begin{lstlisting}[frame=single]
+\begin{enumerate}[label=\textbf{1.\arabic*)}]
+    \item 
+        Primero
+    \item 
+        Segundo
+    \item 
+        Tercero
+            \begin{enumerate}[label=\roman*.]
+                \item 
+                    Tercero, uno.
+                \item 
+                    Tercero, dos.
+            \end{enumerate}
+\end{enumerate}
+\end{lstlisting}
+
+produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+\begin{enumerate}[label=\textbf{1.\arabic*)}]
+    \item 
+        Primero
+    \item 
+        Segundo
+    \item 
+        Tercero
+            \begin{enumerate}[label=\roman*.]
+                \item 
+                    Tercero, uno.
+                \item 
+                    Tercero, dos.
+            \end{enumerate}
+\end{enumerate}
+\end{minipage}
+} }
+\end{center}
+
+\subsubsection{Formatos globales}
+
+En la subsección anterior vimos como modificar las etiquetas de una lista de manera local, es decir, el cambio solo afecta a la lista en cuestión, mientras el resto del documento permanece sin cambios; en el caso de que se desee realizar un cambio global, debemos modificar las variables de etiqueta; un ejemplo de esto se encuentra a continuación:
+
+\begin{lstlisting}[frame=single]
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+
+\begin{enumerate}
+    \item
+        Primero
+    \item
+        Segundo
+    \item
+        Tercero
+        \begin{enumerate}
+        \item
+            Tercero, uno.
+        \item
+            Tercero, dos.
+            \begin{enumerate}
+                \item Tercero, dos uno.
+            \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
+\end{lstlisting}
+
+\noindent
+Esto produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+\begin{enumerate}[label=\arabic*.]
+    \item
+        Primero
+    \item
+        Segundo
+    \item
+        Tercero
+        \begin{enumerate}[label=\arabic{enumi}.\arabic{enumii}]
+        \item
+            Tercero, uno.
+        \item
+            Tercero, dos.
+            \begin{enumerate}[label=\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}]
+                \item Tercero, dos uno.
+            \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Texto subrayado}
+
+Para obtener el texto subrayado seguimos la siguiente sintaxis
+
+\begin{lstlisting}[frame=single]
+\underline{Subrayado}
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{1.8cm}
+\underline{Subrayado}
+\end{minipage}
+} }
+\end{center}
+
+
+\section{Cajas}
+
+Para encerrar el texto o un objeto en una caja podemos usar los comandos \verb@\fbox{@\emph{objeto}\verb@}@ o \verb@\framebox{@\emph{objeto}\verb@}@. Un ejemplo lo podemos encontrar a continuación:
+
+\begin{lstlisting}[frame=single]
+Este documento está hecho en:\\
+\fbox{\LaTeX}
+\end{lstlisting}
+
+\begin{center}
+Este documento está hecho en:\\
+\fbox{\LaTeX}
+\end{center}
+
+\section{Texto en varias columnas}
+
+En muchas ocasiones es necesario escribir texto en varias columnas, por lo que existen diversas maneras para realizar esto. Así, vamos a analizar algunas de las opciones disponibles en \LaTeX{} para este fin.
+
+\subsection{Multicol}
+
+El paquete \verb@\multicol@ es uno de ellos, su sintaxis es bastante sencilla y se basa únicamente en incluir el paquete en el preámbulo y todo el texto que deseemos en columnas se escribe entre  \verb@\begin{multicol}{#}@ y \verb@\end{multicol}@. Notemos que el número de columnas estará dado por el parámetro <<\#>> en la segunda llave del ambiente.
+
+\begin{lstlisting}[frame=single]
+\begin{multicols}{3}
+    \lipsum[1]
+\end{multicols}
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{15cm}
+    \begin{multicols}{3}
+    \lipsum[1]
+    \end{multicols}
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Minipage}
+
+El ambiente minipage permite crear <<mini secciones>> que guardan cierta independencia del documento en general, permitiendo ajustar algunos parámetros a manera de un recuadro.
+
+\begin{lstlisting}[frame=single]
+\begin{minipage}[b]{0.45\textwidth}
+    \lipsum[1]
+\end{minipage} \hfill \begin{minipage}[b]{0.45\textwidth}
+    \lipsum[1]
+\end{minipage}
+\end{lstlisting}
+
+\bigskip
+\bigskip
+
+\begin{minipage}[b]{0.45\textwidth}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim neque, pretium sit amet risus sit amet, vulputate hendrerit risus. Nam quis mi ullamcorper, dapibus nulla nec, hendrerit dolor. Aliquam varius velit a elementum porta. Nam sollicitudin erat sed nibh tincidunt venenatis. Sed scelerisque, est vitae maximus feugiat, massa metus facilisis sapien, cursus rutrum dolor ex ut felis. Aenean vestibulum dui vel urna varius, in bibendum sem iaculis. Aliquam a tempus lorem, vel efficitur felis. 
+\end{minipage} \hfill \begin{minipage}[b]{0.45\textwidth}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim neque, pretium sit amet risus sit amet, vulputate hendrerit risus. Nam quis mi ullamcorper, dapibus nulla nec, hendrerit dolor. Aliquam varius velit a elementum porta. Nam sollicitudin erat sed nibh tincidunt venenatis. Sed scelerisque, est vitae maximus feugiat, massa metus facilisis sapien, cursus rutrum dolor ex ut felis. Aenean vestibulum dui vel urna varius, in bibendum sem iaculis. Aliquam a tempus lorem, vel efficitur felis. 
+\end{minipage}
+
+\section{Texto como en pantalla}
+
+\subsection{Comando \emph{verb}}
+
+En ocasiones, resulta necesario mostrar el código tal y como lo vemos en el editor, como es el caso de este documento, una primera opción para realizar esto es utilizar el comando \verb@\verb@ este nos muestra el texto tal y como lo vemos en el editor.
+
+\begin{lstlisting}[frame=single]
+\verb@\textbf{\textit{Este es un texto en negrita}}@
+\end{lstlisting}
+
+El código anterior produce:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{4.4cm}
+\textbf{\textit{Este es un texto en negrita}}
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Ambiente \emph{verbatim}}
+
+Existen casos en los que deseamos mostrar el texto tal y como nosotros lo observamos en la pantalla de nuestro computador, notemos que por la estructura de \LaTeX{} es necesario el uso del ambiente \verb@verbatim@.
+
+\begin{lstlisting}[frame=single]
+\begin{verbatim}
+    #include<iostream>
+    #include<cmath>
+    #include<sstream>
+    using namespace std;
+    int main()
+    {       
+        int x1,x2,x3,x4;
+        int max;
+        cout << "Ingrese 4 numeros \n";
+        cin >> x1>>x2>>x3>>x4;
+        max = x1;
+        if (x2 > max){
+            max =x2;
+        }
+        if (x3 > max){
+            max =x3;
+        }
+        if (x4 > max){
+            max =x4;
+        }
+        cout << "El maximo es: "<< max<<"\n";
+        return 0;
+    }
+\end{verbatim}
+\end{lstlisting}
+
+\noindent
+\begin{verbatim}
+    #include<iostream>
+    #include<cmath>
+    #include<sstream>
+    using namespace std;
+    int main()
+    {       
+        int x1,x2,x3,x4;
+        int max;
+        cout << "Ingrese 4 numeros \n";
+        cin >> x1>>x2>>x3>>x4;
+        max = x1;
+        if (x2 > max){
+            max =x2;
+        }
+        if (x3 > max){
+            max =x3;
+        }
+        if (x4 > max){
+            max =x4;
+        }
+        cout << "El maximo es: "<< max<<"\n";
+        return 0;
+    }
+\end{verbatim}
+
+
+\subsection{Paquete \emph{listings}}
+
+Este paquete provee opciones más avanzadas respecto a la inclusión de código; sin embargo, no profundizaremos más sobre este paquete en la presente guía. Para más información sobre este paquete puede consultar: \href{https://es.overleaf.com/learn/latex/Code_listing}{https://es.overleaf.com/learn/latex/Code\_listing} o en la documentación del paquete existente en CTAN.
+
+\section{Lineas y efectos de texto}
+
+En esta sección encontraremos algunas herramientas útiles para el formateo de textos. Por ejemplo:
+
+\subsection{\texttt{hfill}}
+
+\begin{lstlisting}[frame=single]
+\textsc{Escuela Politecnica Nacional} \hfill Semestre 2019-B
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{0.9\textwidth}
+    \textsc{Escuela Politécnica Nacional} \hfill Semestre 2019-B
+\end{minipage}
+} }
+\end{center}
+
+\subsection{\texttt{hrulefill} y \texttt{dotfill}}
+
+\begin{lstlisting}[frame=single]
+ Nombre: \hrulefill
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{0.9\textwidth}  
+    Nombre: \hrulefill
+\end{minipage}
+} }
+\end{center}
+
+\vspace{12pt}
+
+\begin{lstlisting}[frame=single]
+ \textsc{Escuela Politecnica Nacional \hfill Semestre 2019-B}\\
+\rule[0.5cm]{\textwidth}{0.01cm}
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{0.9\textwidth}
+    \textsc{Escuela Politécnica Nacional \hfill Semestre 2019-B}\\
+\rule[0.5cm]{\textwidth}{0.01cm}
+\end{minipage}
+} }
+\end{center}
+
+
+
+\section{Notas al margen}
+
+Para realizar anotaciones al margen podemos emplear desde un uso adecuado del comando \verb@\hspace{}@ hasta paquetes especializados en crear este tipo de anotaciones. Así, veamos algunos métodos:
+
+\subsection{Comando \emph{marginpar}}
+
+Este comando nos permite agregar notas al margen aunque la presentación de las mismas dependen de las opciones especificadas en el paquete \verb@geometry@. A continuación se encuentra un breve ejemplo.
+
+\bigskip
+
+\marginnote{Esta es una anotación al margen}
+
+\begin{lstlisting}[frame=single]
+    \marginnote{Esta es una anotacion al margen}
+\end{lstlisting}
+
+\subsection{Comando \emph{hspace}}
+
+Una forma de incluir notas al margen de manera «manual» consiste en abusar del comando \verb@\hspace@ y mover el texto deseado fuera del espacio de trabajo del documento. Un ejemplo se encuentra a continuación:
+
+\begin{lstlisting}[frame=single]
+    \hspace*{-2.2cm} {\cyan \small Texto} $\longrightarrow$
+\end{lstlisting}
+
+\hspace*{-2.2cm} {\color{cyan} \small Texto $\longrightarrow$}
+
+\subsection{Paquete \emph{Marginnote}}
+
+Para un mejor control sobre las notas al margen se puede usar este paquete que permite modificar la posición de las notas y algunos atributos adicionales. Más información sobre el funcionamiento de este paquete se puede encontrar en su documentación: \href{https://ctan.org/pkg/marginnote}{https://ctan.org/pkg/marginnote}.
+
+\begin{lstlisting}[frame=single]
+    Existen muchas notaciones para la derivada de una función. 
+    \marginnote{$\frac{d}{dx}$\\$f'(x)$}
+\end{lstlisting}
+
+Existen muchas notaciones para la derivada de una función. \marginnote{$\frac{d}{dx}$\\$f'(x)$}
+
+\section{Listas \textit{(Continuación)}}
+
+En ocasiones suele ser necesario continuar la numeración de las listas, para realizar esto vamos a usar la opción \texttt{resume}
+
+\begin{lstlisting}[frame=single]
+    \begin{enumerate}[series = ejercicios]
+        \item 
+            Uno
+        \item
+            Dos
+        \item
+            Tres
+    \end{enumerate}
+    
+    \begin{enumerate}[resume* = ejercicios]
+        \item 
+            Cuatro
+        \item
+            Cinco
+    \end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[series = ejercicios]
+    \item 
+        Uno
+    \item
+        Dos
+    \item
+        Tres
+\end{enumerate}
+
+\begin{enumerate}[resume* = ejercicios]
+    \item 
+        Cuatro
+    \item
+        Cinco
+\end{enumerate}
+
+\section{Notas adicionales sobre Fuentes}
+
+\subsection{Más tamaños de fuentes}
+
+En ocasiones resulta útil modificar el tamaño de las fuentes más allá de las opciones que \LaTeX{} nos presenta por defecto. Para ello, vamos a emplear el paquete \verb@\usepackage{anyfontsize}@. Este paquete 
+\begin{lstlisting}[frame=single]
+    {\fontsize{18pt}{21.6pt}\selectfont Texto 1 : Aqui puedes colocar algun texto. 
+    Sin embargo, necesitas un texto suficientemente largo para notar la diferencia.
+    \par}
+
+    \bigskip
+    
+    {\fontsize{22pt}{26.4pt}\selectfont Texto 2 :Aqui puedes colocar algun texto. 
+    Sin embargo, necesitas un texto suficientemente largo para notar la diferencia. 
+    \par}
+\end{lstlisting}
+
+{\fontsize{18pt}{21.6pt}\selectfont Texto 1 : Aquí puedes colocar algún texto. Sin embargo, necesitas un texto suficientemente largo para notar la diferencia.\par}
+
+\bigskip
+
+{\fontsize{22pt}{26.4pt}\selectfont Texto 2 :Aquí puedes colocar algún texto. Sin embargo, necesitas un texto suficientemente largo para notar la diferencia. \par}
+
+\subsection{Codificación de fuentes}
+
+Recordemos que los símbolos empleados en la escritura están codificados por una serie de códigos que definen cada uno de ellos, todo esto a manera de un apodo para poder identificarlos. Sin embargo y dependiendo de la codificación que estemos usando podemos incluir cada uno de estos caracteres con el siguiente comando.
+
+\begin{lstlisting}[frame=single]
+    \char60
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{0.1\textwidth}
+\centering
+\char60
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Familias de fuentes}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        cmr & \fontfamily{cmr}\selectfont Computer Modern Roman (predeterminada) \\
+        cmss & \fontfamily{cmss}\selectfont Computer Modern Sans\\
+        cmtt & \fontfamily{cmtt}\selectfont Computer Modern Typewriter\\
+        cmm & \fontfamily{cmm}\selectfont Computer Modern Math Italic\\
+        cmsy & \fontfamily{cmsy}\selectfont Computer Modern Math Symbols\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        cmex & \fontfamily{cmex}\selectfont Computer Modern Math Extensions\\
+        ptm &\fontfamily{ptm}\selectfont Adobe Times \\
+        phv & \fontfamily{phv}\selectfont Adobe Helvetica\\
+        pcr & \fontfamily{pcr}\selectfont Adobe Courier\\
+        \hline
+    \end{tabular}
+    \caption{Tabla de familia de fuentes}
+\end{table}
+
+\subsection{Peso de la fuente}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        m & \fontseries{m}\selectfont Medium\\
+        b &\fontseries{b}\selectfont Bold \\
+        bx & \fontseries{bx}\selectfont Bold extended\\
+        sb & \fontseries{sb}\selectfont Semi bold\\
+        c & \fontseries{c}\selectfont condensed \\
+        \hline
+    \end{tabular}
+    \caption{Tabla de peso de las fuentes}
+\end{table}
+
+\subsection{Forma de la fuente}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        n & \fontshape{n}\selectfont Normal\\
+        it &\fontshape{it}\selectfont Italic \\
+        sl & \fontshape{sl}\selectfont Slanted (``oblicua'')\\
+        sc & \fontshape{sc}\selectfont Caps and small caps\\
+        \hline
+    \end{tabular}
+    \caption{Tabla de forma de las fuentes}
+\end{table}
+
+\section{Nuevas fuentes}
+
+En esta sección daremos una breve introducción al uso de fuentes nativas del computador. Para su funcionamiento, \LaTeX{} usa las fuentes disponibles en la instalación del compilador, es decir, no accede directamente a las fuentes que se encuentran instaladas en el sistema operativo. Para obtener acceso a las mismas y poder trabajar con ellas es necesario usar un compilador especial, aquí vamos a introducir la compilación con \XeLaTeX{}. Este nuevo motor de compilación introduce el soporte a fuentes TrueType y OpenType, en este curso no se profundiza más sobre este tema pero basta con saber que se refiere a «formatos» de fuentes. Una vez seleccionado el nuevo compilador y verificando la disponibilidad de la fuente, es necesario cargarla en el documento, para ello, primero, cargamos el paquete que nos permite gestionar las nuevas fuentes:
+
+\begin{lstlisting}[frame=single]
+\usepackage{fontspec}
+\end{lstlisting}
+
+Cuando hacemos uso de \XeLaTeX la codificación por defecto soporta el estándar \texttt{UTF-8}. Luego de ello, declaramos la fuente a usar
+
+\begin{lstlisting}[frame=single]
+\setmainfont{Times New Roman}
+\end{lstlisting}
+
+Para el ejemplo declaramos que la nueva fuente a usar es Times New Roman, esta va a reemplazar a Computer Modern que es la familia por defecto en \LaTeX{}. En algunos casos podemos desear escoger fuentes personalizadas para cada estilo disponible, en este caso podemos emplear el siguiente código como ejemplo:
+
+\begin{lstlisting}[frame=single]
+\setromanfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont[Color={0019D4}]{Courier New}
+\end{lstlisting}
+
+La lista completa de fuentes disponibles en Overleaf se puede encontrar en el siguiente enlace: \href{https://es.overleaf.com/learn/latex/Questions/Which\%20OTF\%20or\%20TTF\%20fonts\%20are\%20supported\%20via\%20fontspec\%3F}{Listado de fuentes}. Por otra parte, para descagar nuevas fuentes uno de los repositorios más populares es el proporcionado por Google: \url{https://fonts.google.com/}.
+
+
+Finalmente, en casos particulares podemos requerir usar una fuente no instalada en el compilador, en estos casos debemos disponer de todos los archivos correspondientes a la familia de la fuente a usar. Cargamos los archivos en el directorio y los declaramos. En el siguiente ejemplo se dispone de los siguientes archivos:
+
+\begin{itemize}
+    \item \texttt{BodoniB.ttf}
+    \item \texttt{BodoniI.ttf}
+    \item \texttt{BodoniR.ttf}
+\end{itemize}
+
+Estos archivos corresponden a las diferentes variaciones de la fuente y se las declara con el siguiente código:
+
+\begin{lstlisting}[frame=single]
+\setromanfont[
+BoldFont=BodoniB.ttf,
+ItalicFont=BodoniI.ttf,
+]{BodoniR.ttf}
+\end{lstlisting}
+
+Y, podemos comprobar el resultado con el siguiente código:
+
+\begin{lstlisting}[frame=single]
+Este es un texto en la familia regular de Bodoni MT.
+
+{\it Este es un texto en la familia regular de Bodoni MT.}
+
+{\bf Este es un texto en la familia regular de Bodoni MT.}
+
+\end{lstlisting}
+
+\end{document} 

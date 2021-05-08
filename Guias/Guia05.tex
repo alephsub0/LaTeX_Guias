@@ -1,0 +1,966 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%%--> Paquetes adicionales
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{subfig}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{multicol}
+\usetikzlibrary{matrix}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{cd}
+
+%%--> Preámbulo del material
+\input{preambulo_material}
+
+% -- Datos del libro
+\nota{Guía 5}
+\tema{Tikz y presentaciones}
+
+% \tikzset{
+% every picture/.append style={
+%   execute at begin picture={\deactivatequoting},
+%   execute at end picture={\activatequoting}
+%   }
+% }
+
+\begin{document}
+
+\shorthandoff{<}
+\shorthandoff{>}
+\shorthandoff{"}
+
+\encabezado
+
+\informacion
+
+\tableofcontents
+
+\section{Tikz}
+
+En esta sección estudiaremos la generación de gráficos mediante código, para este propósito tenemos dos opciones: PSTricks y TikZ; debido a la estructura de \LaTeX{} PSTricks está limitado únicamente a ser compatible con el compilador \TeX{} por este motivo vamos a escoger TikZ como el lenguaje para realizar nuestros gráficos. Para comenzar esta sección debemos incluir el paquete y sus opciones en el preámbulo de nuestro documento:
+
+\begin{lstlisting}[frame=single]
+\usepackage{tikz}
+\pgfplotsset{compat=1.15}
+\usepackage{pgfplots}
+\end{lstlisting}
+
+
+Una de las funcionalidades más prácticas de TikZ está en su capacidad de crear pequeños gráficos en medio del texto escrito. Por ejemplo, si se desea generar un pequeño círculo rojo en medio de este texto podemos usar el siguiente código:
+
+\begin{lstlisting}[frame=single]
+Este código nos muestra como crear un círculo -> \tikz \fill[orange] (1ex,1ex) circle (1ex);
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+Este código nos muestra como crear un círculo -> \tikz \fill[orange] (1ex,1ex) circle (1ex);
+\end{minipage}
+} }
+\end{center}
+
+Sin embargo, en la mayoría de los casos requerimos que se use el ambiente para la elaboración de gráficos más complejos. Para comenzar con la elaboración de gráficos, consideremos los comandos básicos para la generación de los mismos. 
+
+\subsection{Comando \texttt{draw}}
+
+Este comando es el más sencillo y nos permite trazar una linea entre los dos puntos: un ejemplo lo podemos ver a continuación
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw (0,0) -- (2,2); % segmento
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+    \draw (0,0) -- (2,2); % segmento
+    \end{tikzpicture}
+\end{center}
+
+Para una ayuda visual al momento de realizar nuestros gráficos, podemos recurrir a la opción \verb@[help lines]@ del comando \verb@\draw@, de esta manera tenemos el siguiente ejemplo:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw(0,0) -- (2,2); % segmento
+    \draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw (0,0) -- (2,2); % segmento
+\draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{center}
+
+Una vez realizado nuestro gráfico, es importante poder manipular las dimensiones del mismo; para escalar un gráfico realizado en TikZ, recurrimos a la opción \verb@scale@ del ambiente, por ejemplo:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[scale=2]
+    \draw[red] (0,0) -- (2,2); % segmento
+    \draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[scale=2]
+\draw[red] (0,0) -- (2,2); % segmento
+\draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{center}
+
+Para escalar el gráfico con diferentes razones en cada eje usamos \verb@xscale@ y \verb@yscale@
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[xscale=2,yscale=1.25]
+    \draw[red] (0,0) -- (2,2); % segmento
+    \draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[xscale=2,yscale=1.25]
+    \draw[red] (0,0) -- (2,2); % segmento
+    \draw[help lines] (0,0) grid (2,2);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Flechas}
+
+En esta subsección aprenderemos a incluir «flechas» a las lineas que aprendimos a dibujar, estas se incluyen como argumentos del comando \verb@draw@ de la siguiente manera:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [->] (0,0) -- (2,0);
+    \draw [<-] (0, -0.5) -- (2,-0.5);
+    \draw [|->] (0,-1) -- (2,-1);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+
+
+
+\begin{tikzpicture}
+    \draw [->] (0,0) -- (2,0);
+    \draw [<-] (0, -0.5) -- (2,-0.5);
+    \draw [|->] (0,-1) -- (2,-1);
+\end{tikzpicture}
+\end{center}
+
+\begin{advertencia}
+Las opciones \verb@|->@  y \verb@->@ tienen un conflicto con el paquete \verb@babel@ al momento de usar el idioma español, por ese motivo es necesario incluir las siguientes instrucciones luego del \verb@\begin{document}@:
+
+
+\begin{verbatim}
+\shorthandoff{<}
+\shorthandoff{>}
+\end{verbatim}
+
+\end{advertencia}
+
+\subsubsection{Grosor del trazo}
+
+Para la modificación del grosor del trazo tenemos los siguientes ejemplos:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [ultra thick] (0,1) -- (2,1);
+    \draw [thick] (0,0.5) -- (2,0.5);
+    \draw [thin] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [ultra thick] (0,1) -- (2,1);
+\draw [thick] (0,0.5) -- (2,0.5);
+\draw [thin] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{center}
+
+Sin embargo, también es posible usar medidas personalizadas usando las unidades vistas en la primera guía; un ejemplo de 
+ello se encuentra a continuación:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [line width=12pt] (0,0) -- (2,0);
+    \draw [line width=0.2cm] (4,.75) -- (5,.25);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [line width=12pt] (0,0) -- (2,0);
+\draw [line width=0.2cm] (4,.75) -- (5,.25);
+\end{tikzpicture}
+\end{center}
+
+Por defecto, la unidad usada en TikZ es el punto tipográfico.
+
+\subsubsection{Guiones y puntos}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [dashed, ultra thick] (0,1) -- (2,1);
+    \draw [dashed] (0, 0.5) -- (2,0.5);
+    \draw [dotted] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+    \draw [dashed, ultra thick] (0,1) -- (2,1);
+    \draw [dashed] (0, 0.5) -- (2,0.5);
+    \draw [dotted] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Colores}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [gray] (0,1) -- (2,1);
+    \draw [red] (0, 0.5) -- (2,0.5);
+    \draw [blue] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+    \draw [gray] (0,1) -- (2,1);
+    \draw [red] (0, 0.5) -- (2,0.5);
+    \draw [blue] (0,0) -- (2,0);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Figuras geométricas}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture} % ejes
+    \draw[thin] (0,2) -- (0,0) -- (2,0);
+    % rectangulo borde negro, relleno rojo, esquina (0,0)
+    \draw[black, fill=red] (0,0) rectangle(1,1);
+    % circulo verde, centro =(1.5,.5) y radio 0.5cm
+    \draw[green, fill=green] (1.5,0.5) circle [radius
+    =0.5];
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture} % ejes
+\draw[thin] (0,2) -- (0,0) -- (2,0);
+% rectángulo borde negro, relleno rojo, esquina (0,0)
+\draw[black, fill=red] (0,0) rectangle(1,1);
+% círculo verde, centro =(1.5,.5) y radio 0.5cm
+\draw[green, fill=green] (1.5,0.5) circle [radius
+=0.5];
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Más ejemplos}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture} % ejes
+    \draw[thin, blue] (0,2) -- (0,0) -- (2,0);
+    % segmento
+    \draw[line width =0.051cm, red, dashed]
+    (-1,-1) -- (1.5,1.5);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture} % ejes
+    \draw[thin, blue] (0,2) -- (0,0) -- (2,0);
+    % segmento
+    \draw[line width =0.051cm, red, dashed]
+    (-1,-1) -- (1.5,1.5);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Curvas}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [blue] (0,0) rectangle (1.5,1);
+    \draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
+    \draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [blue] (0,0) rectangle (1.5,1);
+\draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
+\draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [<->, rounded corners, thick, purple] (0,2) -- (0,0) -- (3,0);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [<->, rounded corners, thick, purple] (0,2) -- (0,0) -- (3,0);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Graficar funciones}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[scale=0.8] % Escalamiento de la figura 80%
+    \draw (-1,0) -- (4,0) node[right] {$x$}; % Ejes
+    \draw (0,-1) -- (0, 2) node[left] {$y$};
+    % Dominio: domain = a:b
+    \draw[smooth, domain = 0:2, color=red] plot (\x,\x)node[right] {$y = x$
+    };
+    %\x r indica que x se mide en radianes
+    \draw[smooth, domain = -2:2, color=blue] plot (\x,{sin(2*\x r)+1})
+    node[right] {$y = \sin(2*x)+1$};
+    \draw[smooth, domain = -1:1, color=black] plot (\x,{exp(\x)}) node[right
+    ] {$y = e^x$};
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.8] % Escalamiento de la figura 80%
+\draw (-1,0) -- (4,0) node[right] {$x$}; % Ejes
+\draw (0,-1) -- (0, 2) node[left] {$y$};
+% Dominio: domain = a:b
+\draw[smooth, domain = 0:2, color=red] plot (\x,\x)node[right] {$y = x$
+};
+%\x r indica que x se mide en radianes
+\draw[smooth, domain = -2:2, color=blue] plot (\x,{sin(2*\x r)+1})
+node[right] {$y = \sin(2*x)+1$};
+\draw[smooth, domain = -1:1, color=black] plot (\x,{exp(\x)}) node[right
+] {$y = e^x$};
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[xscale=13,yscale=3.8]
+    \draw [<->] (0,0.8) -- (0,0) -- (0.5,0);
+    \draw[green, ultra thick, domain=0:0.5] plot (\x, {0.025+\x+\x*\x});
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[xscale=13,yscale=3.8]
+\draw [<->] (0,0.8) -- (0,0) -- (0.5,0);
+\draw[green, ultra thick, domain=0:0.5] plot (\x, {0.025+\x+\x*\x});
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[yscale=1.5]
+    \draw [help lines, <->] (0,0) -- (6.5,0);
+    \draw [help lines, ->] (0,-1.1) -- (0,1.1);
+    \draw [green,domain=0:2*pi] plot (\x, {(sin(\x r)* ln(\x+1))/2});
+    \draw [red,domain=0:pi] plot (\x, {sin(\x r)});
+    \draw [blue, domain=pi:2*pi] plot (\x, {cos(\x r)*exp(\x/exp(2*pi))});
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[yscale=1.5]
+\draw [help lines, <->] (0,0) -- (6.5,0);
+\draw [help lines, ->] (0,-1.1) -- (0,1.1);
+\draw [green,domain=0:2*pi] plot (\x, {(sin(\x r)* ln(\x+1))/2});
+\draw [red,domain=0:pi] plot (\x, {sin(\x r)});
+\draw [blue, domain=pi:2*pi] plot (\x, {cos(\x r)*exp(\x/exp(2*pi))});
+\end{tikzpicture}
+\end{center}
+
+\subsection{Rellenos}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [fill=red,ultra thick] (0,0) rectangle (1,1);
+    \draw [fill=red,ultra thick,red] (2,0) rectangle (3,1);
+    \draw [blue, fill=blue] (4,0) -- (5,1) -- (4.75,0.15) -- (4,0);
+    \draw [fill] (7,0.5) circle [radius=0.1];
+    \draw [fill=orange] (9,0) rectangle (11,1);
+    \draw [fill=white] (9.25,0.25) rectangle (10,1.5);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [fill=red,ultra thick] (0,0) rectangle (1,1);
+\draw [fill=red,ultra thick,red] (2,0) rectangle (3,1);
+\draw [blue, fill=blue] (4,0) -- (5,1) -- (4.75,0.15) -- (4,0);
+\draw [fill] (7,0.5) circle [radius=0.1];
+\draw [fill=orange] (9,0) rectangle (11,1);
+\draw [fill=white] (9.25,0.25) rectangle (10,1.5);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Etiquetas}
+
+En esta sección vamos a aprender a incluir etiquetas en nuestros gráficos, para ello consideremos los siguientes ejemplos:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+    \node at (1,1) {yes};
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+\node at (1,1) {yes};
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+    \draw[fill] (1,1) circle [radius=0.025];
+    \node [below] at (1,1) {below};
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+\draw[fill] (1,1) circle [radius=0.025];
+\node [below] at (1,1) {below};
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[scale=1.25]
+    \draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+    \draw[fill] (1,1) circle [radius=0.025];
+    \node [below] at (1,1) {below};
+    \node [above] at (1,1) {above};
+    \node [left] at (1,1) {left};
+    \node [right] at (1,1) {right};
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\draw [thick, <->] (0,2) -- (0,0) -- (2,0);
+\draw[fill] (1,1) circle [radius=0.05];
+\node [below] at (1,0.5) {below};
+\node [above] at (1,1.5) {above};
+\node [left] at (0.5,1) {left};
+\node [right] at (1.5,1) {right};
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[scale=2]
+    \draw [thick, <->] (0,1) -- (0,0) -- (1,0);
+    \draw[fill] (1,1) circle [radius=0.025];
+    \node [below right, red] at (.5,.75) {below right};
+    \node [above left, green] at (.5,.75) {above left};
+    \node [below left, purple] at (.5,.75) {below left};
+    \node [above right, magenta] at (.5,.75) {above right};
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[scale=2]
+\draw [thick, <->] (0,1) -- (0,0) -- (1,0);
+\draw[fill] (1,1) circle [radius=0.025];
+\node [below right, red] at (.5,.75) {below right};
+\node [above left, green] at (.5,.75) {above left};
+\node [below left, purple] at (.5,.75) {below left};
+\node [above right, magenta] at (.5,.75) {above right};
+\end{tikzpicture}
+\end{center}
+
+
+\subsection{Algunos ejemplos adicionales}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}
+    \path [fill=yellow] (0,0) -- (0,5) to [out=-80, in=160]
+    (3,.8) -- (3,0) -- (0,0);
+    \draw [<->] (0,6) node [left] {$P$} -- (0,0)
+    node [below left] {(0,0)} -- (7,0) node [below] {$Q$};
+    \draw [ultra thick, dashed] (0,.8) node [left] {$P^*=.8$} -- (3,.8)
+    -- (3,0) node [below] {$Q^*=3$};
+    \draw [fill] (3,.8) circle [radius=.1];
+    \draw [thick] (0,5) to [out=-80, in=160] (3,.8) to
+    [out=-20, in=175] (6,0);
+\end{tikzpicture}
+
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\path [fill=yellow] (0,0) -- (0,5) to [out=-80, in=160]
+(3,.8) -- (3,0) -- (0,0);
+\draw [<->] (0,6) node [left] {$P$} -- (0,0)
+node [below left] {(0,0)} -- (7,0) node [below] {$Q$};
+\draw [ultra thick, dashed] (0,.8) node [left] {$P^*=.8$} -- (3,.8)
+-- (3,0) node [below] {$Q^*=3$};
+\draw [fill] (3,.8) circle [radius=.1];
+\draw [thick] (0,5) to [out=-80, in=160] (3,.8) to
+[out=-20, in=175] (6,0);
+\end{tikzpicture}
+
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[xscale=0.8] % Escalamiento 80%
+    % Segmento de 0 a 1
+    \draw[-][draw=red, thick] (0,0) -- (.5,0);
+    \draw[-][draw=green, thick] (.5,0) -- (1,0);
+    % Texto debajo ("below") del segmento
+    \draw [thick] (0,-.1) node[below]{$a=0$} -- (0,0.1);
+    \draw [thick] (0.5,-.1) node[below]{$m=\frac{a+b}{2}$} -- (0.5,0.1);
+    \draw [thick] (1,-.1) node[below]{$b=1$} -- (1,0.1);
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}[xscale=8] % Escalamiento 80%
+% Segmento de 0 a 1
+\draw[-][draw=red, thick] (0,0) -- (.5,0);
+\draw[-][draw=green, thick] (.5,0) -- (1,0);
+% Texto debajo ("below") del segmento
+\draw [thick] (0,-.1) node[below]{$a=0$} -- (0,0.1);
+\draw [thick] (0.5,-.1) node[below]{$m=\frac{a+b}{2}$} -- (0.5,0.1);
+\draw [thick] (1,-.1) node[below]{$b=1$} -- (1,0.1);
+\end{tikzpicture}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\usetikzlibrary{matrix}
+begin{tikzpicture}[scale=2]
+    \matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
+    {
+     F_t(x) & F(x) \\
+     A_t & A \\};
+    \path[-stealth]
+    (m-1-1) edge node [left] {$\mathcal{B}_X$} (m-2-1)
+            edge [double] node [below] {$\mathcal{B}_t$} (m-1-2)
+    (m-2-1.east|-m-2-2) edge node [below] {$\mathcal{B}_T$}
+            node [above] {$\exists$} (m-2-2)
+    (m-1-2) edge node [right] {$\mathcal{B}_T$} (m-2-2)
+        edge [dashed,-] (m-2-1);
+\end{tikzpicture}
+\end{lstlisting}
+
+\vspace{12pt}
+
+\begin{center}
+    \begin{tikzpicture}[scale=2]
+  \matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
+  {
+     F_t(x) & F(x) \\
+     A_t & A \\};
+  \path[-stealth]
+    (m-1-1) edge node [left] {$\mathcal{B}_X$} (m-2-1)
+            edge [double] node [below] {$\mathcal{B}_t$} (m-1-2)
+    (m-2-1.east|-m-2-2) edge node [below] {$\mathcal{B}_T$}
+            node [above] {$\exists$} (m-2-2)
+    (m-1-2) edge node [right] {$\mathcal{B}_T$} (m-2-2)
+            edge [dashed,-] (m-2-1);
+\end{tikzpicture}
+\end{center}
+
+% \begin{lstlisting}[frame=single]
+% \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45]
+%     \begin{axis}[
+%     x=3.0cm,y=3.0cm,
+%     axis lines=middle,
+%     ymajorgrids=true,
+%     xmajorgrids=true,
+%     xmin=-0.1,
+%     xmax=1.3,
+%     ymin=-0.1,
+%     ymax=1.3,
+%     xtick={0,0.5,1},
+%     ytick={0,0.5,1}]
+%     \clip(-0.1,-0.1) rectangle (1.3,1.3);
+%         \draw [line width=1.4 pt] (0.,0.)-- (0.5,1.);
+%         \draw [line width=1.4 pt] (0.5,0.5)-- (1.,0.5);
+%         \draw [fill=colordef] (1.,0.5) circle (2.5pt);
+%         \draw [fill=colordef] (0.5,0.5) circle (2.5pt);
+%         \draw [fill=white] (0.5,1.) circle (2.5pt);
+%         \draw [fill=colordef] (0.,0.) circle (2.0pt);
+%     \end{axis}
+% \end{tikzpicture}
+% \end{lstlisting}
+
+% \begin{center}
+%     \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45]
+%     \begin{axis}[
+%     x=3.0cm,y=3.0cm,
+%     axis lines=middle,
+%     ymajorgrids=true,
+%     xmajorgrids=true,
+%     xmin=-0.1,
+%     xmax=1.3,
+%     ymin=-0.1,
+%     ymax=1.3,
+%     xtick={0,0.5,1},
+%     ytick={0,0.5,1}]
+%     \clip(-0.1,-0.1) rectangle (1.3,1.3);
+%         \draw [line width=1.4 pt] (0.,0.)-- (0.5,1.);
+%         \draw [line width=1.4 pt] (0.5,0.5)-- (1.,0.5);
+%         \draw [fill=colordef] (1.,0.5) circle (2.5pt);
+%         \draw [fill=colordef] (0.5,0.5) circle (2.5pt);
+%         \draw [fill=white] (0.5,1.) circle (2.5pt);
+%         \draw [fill=colordef] (0.,0.) circle (2.0pt);
+%     \end{axis}
+% \end{tikzpicture}
+% \end{center}
+
+Para los siguientes diagramas se requiere la librería \verb@cd@; así, debemos incluir:
+
+\begin{lstlisting}[frame=single]
+\usetikzlibrary{cd}
+\end{lstlisting}
+
+Además de la declaración de los signos \verb@"@ para evitar conflictos con el paquete \verb@babel@, esto se soluciona incluyendo el siguiente comando luego del \verb@\begin{document}@
+
+\begin{lstlisting}[frame=single]
+\shorthandoff{"}
+\end{lstlisting}
+
+Con ello, consideremos los siguientes ejemplos:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzcd}
+    A\arrow[rd] \arrow[r, "\phi"] & B \\
+    & C
+\end{tikzcd}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzcd}
+A\arrow[rd] \arrow[r, "\phi"] & B \\
+& C
+\end{tikzcd}
+\end{center}
+
+\begin{lstlisting}[frame=single]
+\begin{tikzcd}
+    T
+    \arrow[drr, bend left, "x"]
+    \arrow[ddr, bend right, "y"]
+    \arrow[dr, dotted, "{(x,y)}" description] & & \\
+    & X \times_Z Y\arrow[r, "p"]\arrow[d, "q"]
+    & X\arrow[d, "f"] \\
+    & Y\arrow[r, "g"]& Z
+\end{tikzcd}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzcd}
+    T
+    \arrow[drr, bend left, "x"]
+    \arrow[ddr, bend right, "y"]
+    \arrow[dr, dotted, "{(x,y)}" description] & & \\
+    & X \times_Z Y\arrow[r, "p"]\arrow[d, "q"]
+    & X\arrow[d, "f"] \\
+    & Y\arrow[r, "g"]& Z
+\end{tikzcd}
+\end{center}
+
+\subsection{Graficar datos}
+
+Una de las formas más usuales de realizar gráficos es en base a un archivo de datos que proporciona los puntos a graficar. En este sentido, es posible graficar esos datos directamente en \LaTeX{}, para ello requerimos el paquete \verb@pgfplotstable@ y un archivo de texto plano (\verb@.txt@) con los datos separados por un espacio simple, con decimales separados por puntos y con un título en cada columna para poder especificar la columna de datos a tomar.  
+
+
+Para ilustrar el funcionamiento de esta opción consideremos el siguiente caso: Para una exposición se requiere un gráfico que relacione las dimensiones de una matriz con su número de condición\footnote{En el campo del análisis numérico, el número de condición de una función respecto de su argumento mide cuánto se modifica el valor de salida si se realiza un gran cambio en el valor de entrada. (Wikipedia, 2021)}; para ello se han exportado los datos a un archivo con las características requeridas de nombre \verb@Datos.txt@ y con el siguiente contenido:
+
+\begin{lstlisting}[frame=single]
+num A Atil
+0 0 0
+0 0 0
+0 0 0
+4 3 2.08
+9 9 4.77
+16 13.33 7.3
+25 20.77 11.07
+36 27.45 14.77
+49 37.26 19.56
+64 46.3 24.43
+81 58.48 30.34
+100 69.86 36.41
+121 84.41 43.5
+144 98.15 50.76
+169 115.06 59.04
+196 131.15 67.5
+225 150.42 76.97
+256 168.87 86.64
+289 190.49 97.3
+324 211.3 108.16
+361 235.29 120.01
+400 258.45 132.07
+441 284.79 145.12
+484 310.32 158.38
+529 339.01 172.62
+576 366.9 187.07
+625 397.95 202.51
+\end{lstlisting}
+
+Notemos que nuestro archivo posee 3 columnas con sus respectivos títulos. A continuación procedemos a realizar la gráfica respectiva, para ello consideremos el siguiente código:
+
+\begin{lstlisting}[frame=single]
+\begin{tikzpicture}[scale=0.75]
+    \begin{axis}[
+        xlabel={Dimensión de la matriz},
+        ylabel={Número de condición},
+        legend pos=north west,
+        legend entries={Sin condicionar,Condicionada},
+        ]
+        \addplot table [x=num,y=A,color=colordef] {Datos.txt};
+        \addplot table [x=num,y=Atil] {Datos.txt};
+    \end{axis}
+\end{tikzpicture}
+\end{lstlisting}
+
+y obtenemos el siguiente gráfico:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75]
+\begin{axis}[
+    xlabel={Dimensión de la matriz},
+    ylabel={Número de condición},
+    legend pos=north west,
+    legend entries={Sin condicionar,Condicionada},
+    ]
+    \addplot table [x=num,y=A] {Datos.txt};
+    \addplot table [x=num,y=Atil] {Datos.txt};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Notemos que de esta manera es posible optimizar el tiempo requerido para actualizar los gráficos en el caso de que los datos cambien. Más información sobre este paquete puede ser encontrada en: \href{https://ctan.org/pkg/pgfplotstable}{https://ctan.org/pkg/pgfplotstable}.
+
+\section{Beamer}
+
+\subsection{Introducción}
+
+La clase \emph{beamer} nos permite generar presentaciones con diapositivas y transparencias, cada diapositiva se conoce como \emph{frame} 
+
+\begin{lstlisting}[frame=single]
+\documentclass{beamer}
+\end{lstlisting}
+
+El desarrollo de una presentación con \emph{beamer} requiere ciertas opciones adicionales pero no dista mucho de la estructura de un documento normal. La primera parte involucra declarar la clase como vimos anteriormente, luego de ello vamos a declarar ciertas opciones de la clase como se detalla a continuación:
+
+\begin{lstlisting}[frame=single]
+\usefonttheme{professionalfonts}
+\usetheme{Warsaw}
+\setbeamercovered{transparent}
+
+\title{Mi primera presentación}
+\subtitle{Parte I}
+\author{Daniel Lara}
+\date{Junio 2007}
+\end{lstlisting}
+
+Luego de ello, comenzamos el documento con el usual \verb@\begin{document}@ y cada diapositiva estará delimitada por el ambiente \verb@frame@, con ello y el siguiente código tenemos nuestra primera presentación:
+
+\begin{lstlisting}[frame=single]
+\begin{document}
+
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Diapositiva 1}
+    Esta es mi primera diapositiva.
+\end{frame}
+
+\end{document}
+\end{lstlisting}
+
+Cuyo resultado es el siguiente:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo01_Página_1.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo01_Página_2.jpg}}}
+\end{figure}
+
+A continuación se encuentra pequeña lista de los temas disponibles en la clase \emph{beamer}
+
+\begin{multicols}{3}
+\begin{itemize}
+    \item Bergen
+    \item Boadilla
+    \item Warsaw
+    \item Hannover
+    \item Luebeck
+    \item AnnArbor
+\end{itemize}
+\end{multicols}
+
+Una lista más completa de los temas se puede encontrar en \href{https://hartwork.org/beamer-theme-matrix/}{https://hartwork.org/beamer-theme-matrix/} y plantillas desarrolladas en Overleaf en la siguiente dirección: \href{https://es.overleaf.com/gallery/tagged/presentation}{https://es.overleaf.com/gallery/tagged/presentation}
+
+\subsection{Velos}
+
+Una de las utilidades de la clase \emph{beamer} es la posibilidad de crear «velos», esto se refiere a una disminución de la opacidad del texto u objeto de tal manera que el observador tiene la sensación de que algo «cubre» es parte de la presentación. 
+
+Una primera forma de utilizar los mismos es recurrir a la opción \verb@[<+->]@ de los ambientes \verb@enumerate@ o \verb@itemize@. Un ejemplo se encuentra a continuación:
+
+\begin{lstlisting}
+\begin{frame}
+\frametitle{Infinitud de los números primos}
+\framesubtitle{Demostración}
+\begin{enumerate}[<+->]
+    \item Supongamos que  $n\in\mathbb{N}$ es el mayor número primo.
+    \item Tomemos $q$ como el producto de todos los números primos hasta llegar a $p$, claramente se tiene que 
+    $q$ no es primo. 
+    \item Se sigue que existen $a$ y $b$ primos mayores que 1 tal que $a\times b = q$.
+    \item Más aún, $a+b$ no es divisible para ninguno de los primos anteriores, pero al ser un número compuesto 
+    es divisible.
+    \item Por reducción al absurdo se concluye que la cantidad de números primos es infinita.
+\end{enumerate}
+\end{frame}
+\end{lstlisting}
+
+Este produce:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_3.jpg}}}
+\hspace{1em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_4.jpg}}}
+\hspace{1em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_5.jpg}}}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_6.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_7.jpg}}}
+\end{figure}
+
+\section{Ambientes}
+
+Al igual que en la clase \emph{article}, en la clase \emph{beamer} podemos definir ambientes para facilitar nuestra exposición, para ello basta con declararlos en el preámbulo del documento:
+
+\begin{lstlisting}[frame=single]
+\newtheorem{teo}{Teorema}
+\newtheorem{ejemplo}{Ejemplo}
+\newtheorem{defi}{Definición}
+\newtheorem{coro}{Corolario}
+\newtheorem{prueba}{Prueba}
+\end{lstlisting}
+
+En este punto vamos a introducir el comando \verb@\pause@ este comando permite generar velos en nuestra presentación separando la diapositiva en el punto en el que se introduce el comando, un ejemplo lo podemos ver a continuación
+
+\begin{lstlisting}[frame=single]
+\begin{frame}{Análisis funcional}
+\begin{teo} 
+    Sean $E,F$ espacios de Banach y $T\in\mathcal{L}(E,F)$, si $T$ es sobreyectivo entonces $T$ es abierto.
+\end{teo}
+\pause 
+\begin{coro}
+    Sean $E,F$ espacios de Banach y $T\in\mathcal{L}(E,F)$, si $T$ es biyectivo entonces 
+    $T^{-1}\in\mathcal{L}(E,F)$.
+\end{coro}
+\end{lstlisting}
+
+Este código produce:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo03_Página_1.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo03_Página_2.jpg}}}
+\end{figure}
+
+\section{Documentos grandes}
+
+Para concluir nuestra guía vamos a analizar el siguiente caso: Los documentos pequeños como un artículo, una carta, etc. no requieren demasiada organización para comprender su contenido. Sin embargo, en la composición de un libro, una tesis o un documento que disponga de varias decenas de hojas, la organización del mismo es un reto. Recordemos que \LaTeX{} debe compilar un documento y este proceso requiere un tiempo para completarse; además, manipular archivos de código tan grandes (varias miles de lineas) puede resultar casi imposible. Para enfrentar esta tarea podemos recurrir una «técnica» de organización de proyecto. Vamos a dividir nuestro documento original en varios archivos que puedan ser «llamados» por un archivo «maestro». 
+
+Consideremos el siguiente ejemplo de código:
+
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+\chapter{Capitulo 1}
+Contenido del capítulo...
+
+\chapter{Capitulo 1}
+Contenido del capítulo...
+
+\end{document}
+\end{lstlisting}
+
+Así, lo que haremos será separar este único archivo «maestro», en tres archivos, dos de contenido y uno auxiliar; estos serán los siguientes 
+
+\medskip
+
+\begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+%% Aqui vamos a incluir
+%% los otros archivos
+
+\end{document}
+\end{lstlisting}
+\end{minipage} \quad \begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\chapter{Capitulo 1}
+Contenido del capítulo...
+\end{lstlisting}
+\end{minipage} \quad \begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\chapter{Capitulo 2}
+Contenido del capítulo...
+\end{lstlisting}
+\end{minipage}
+
+Donde el nombre del archivo maestro es: \verb@main.tex@ y los archivos de los capítulos son: \verb@Capitulo01.tex@ y \verb@Capitulo02.tex@, respectivamente.
+
+Ahora, basta saber: ¿cómo incluimos los archivos adicionales?. Para esta tarea disponemos de los comandos: 
+
+\begin{itemize}
+    \item \verb@\input{@\emph{nombre del archivo}\verb@}@ incluye el contenido del archivo exactamente en el lugar en el que se encuentra el comando sin modificar los espacios.
+    \item \verb@\include{@\emph{nombre del archivo}\verb@}@ incluye el contenido del archivo exactamente en el lugar en el que se encuentra el comando pero agrega un salto de página adelante y atrás del punto donde se incluye el contenido.
+\end{itemize}
+
+Con esto, nuestro archivo maestro tendría la siguiente forma, usando el comando \verb@\input@
+
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+% Incluye el capitulo 1
+\input{Capitulo01}
+% Incluye el capitulo 2
+\input{Capitulo01}
+
+\end{document}
+\end{lstlisting}
+
+\begin{obs}
+La organización al momento de crear un documento es de vital importancia es por esto que además de separar el documento principal, es posible organizar todos los contenidos del proyecto en carpetas que faciliten su manejo.
+\end{obs}
+
+\end{document} 

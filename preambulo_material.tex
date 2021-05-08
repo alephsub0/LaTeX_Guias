@@ -1,0 +1,94 @@
+%% --> Paquetes comunes
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{lipsum}
+
+%% --> Definición de colores
+\definecolor{codegreen}{HTML}{A5BE00}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%% --> Estilo para código
+\lstdefinestyle{mystyle}{
+    language={[LaTeX]TeX}, % lenguaje
+    basicstyle=\bfseries\ttfamily,
+    keywordstyle=\color{colordef},
+    commentstyle=\color{codegreen},
+    backgroundcolor=\color{gray!15},
+    showstringspaces=false,
+    flexiblecolumns=true,
+    stringstyle=\ttfamily\color{blue},
+    extendedchars=true,
+    emph={rm,bf,it,sf}, %...
+    literate=%
+    *{$}{{{\color{red}\$}}}1 % produce $ en rojo
+    {$$}{{{\color{red}\$\$}}}1
+    {ó}{{\'o}}1%
+    {í}{{\'i}}1%
+    {á}{{\'a}}1%
+    {ú}{{\'u}}1%
+}
+
+%% --> Selección de estilo para el código
+\lstset{
+    style=mystyle,escapeinside={(*@}{@*)}
+}
+
+% Blancos tipográficos
+\newcommand{\mq}{\hspace{0.5em}}  %medio cuadratín
+\newcommand{\tq}{\hspace{0.33em}} % un terio de cuadratín
+\newcommand{\qq}{\hspace{0.25em}} % un cuarto de cuadratín
+\newcommand{\fs}{\hspace{0.125em}} % un octavo de cuadratín
+\newcommand{\ep}{\hspace{0.05em}} % espacio de pelo
+
+%% --> Nota para el material
+\newcommand{\informacion}{\noindent\footnotesize{\color{colordef}
+El presente material fue desarrollado por:
+
+\noindent
+\textbf{Daniel Lara}
+
+\emph{Facultad de Ciencias, Escuela Politécnica Nacional}
+
+\noindent
+\textbf{Andrés Merino}
+
+\emph{Facultad de Ciencias Exactas y Naturales, Pontificia Universidad Católica del Ecuador}
+
+
+\medskip\noindent
+La versión actual del material es 1.2-(Mayo 2021). En caso de encontrar inconsistencias o errores en el presente material se pueden comunicar a \href{mailto:daniel.lara@alephsub0.org}{daniel.lara@alephsub0.org}. Para más información puedes visitar nuestro sitio web: \href{https://alephsub0.org}{alephsub0.org}
+
+\medskip\noindent
+\includegraphics[height=12pt]{Imagenes/cc.xlarge.png} \includegraphics[height=12pt]{Imagenes/by.xlarge.png} \includegraphics[height=12pt]{Imagenes/nc.xlarge.png} \begin{minipage}[c]{0.85\textwidth}Esta obra se encuentra bajo licencia Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0) Para más información puede visitar: \url{https://creativecommons.org/licenses/by-nc-sa/4.0/}\end{minipage}
+
+\medskip\noindent
+Si deseas colaborar con el desarrollo de este material, el código fuente está disponible en:   
+\url{https://github.com/daniel-lara-ec/LaTeX_Guias.git}. Cualquier aporte (\emph{Pull request}) será de gran ayuda para mejorar este material. 
+
+%% -- > Aquí se incluyen los nombres de los colaborades de estas guias:
+\medskip\noindent
+Katheryn Yánes
+}}
+
+%%--> Formato para títulos
+\titleformat{name=\section,numberless}[display]
+  {\vspace*{-2mm}\bfseries\scshape\centering}
+    {}{1ex}
+    {\color{colortext}\large\titlerule\vspace{.05ex}
+     }
+    [\color{colortext}\vspace{.2ex}\titlerule]
+
+\titleformat{\subsubsection}
+    {\color{colortext}\normalsize\bfseries}
+    {\thesubsubsection}{1em}{}
+    
+%% --> Datos de las guias
+\universidad{Alephsub0 Editorial}
+\autor{Daniel Lara}
+\materia{Introducción a LaTeX}
+
+%% --> Logos de las guias
+\logouno[2cm]{Imagenes/LogoAleph0-leyenda.png}
+\fecha{Semestre 2020-B}

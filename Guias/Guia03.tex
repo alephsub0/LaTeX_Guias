@@ -1,0 +1,806 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%% --> Paquetes adicionales
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{esvect}
+\usepackage{amssymb}
+
+\input{preambulo_material}
+
+% -- Datos del libro
+\nota{Guía 3}
+\tema{Formato de fórmulas}
+
+%% ---> Opciones adicionales
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+
+%% ---> Definiciones de ambientes
+\theoremstyle{definition}
+\newtheorem{defin}{Definición}
+
+\theoremstyle{plain}
+\newtheorem{teor}{Teorema}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+\color{black}
+\normalsize
+
+\tableofcontents
+
+\section{Preliminares}
+
+Para el desarrollo de esta sección vamos a emplear algunos paquetes que complementan las opciones disponibles para la escritura de textos matemáticos. De esta manera, este será el preámbulo necesario para esta guía:
+
+\begin{lstlisting}[frame=single]
+\documentclass[10pt]{article}
+
+\usepackage{geometry}
+
+%Paquetes adicionales de simbolos matematicos
+\usepackage{amsmath,amssymb,amsfonts,latexsym}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\end{lstlisting}
+
+\begin{advertencia}
+En algunos puntos puede ser necesario incluir más paquetes para ciertas actividades; sin embargo, recalcamos la importancia de cargar la menor cantidad de paquetes posibles para evitar posibles inconvenientes en la compilación del documento.
+\end{advertencia}
+
+\section{Modo en línea y desplegado}
+
+Para la escritura de texto matemático existen dos formas de acuerdo a si lo queremos dentro de un texto, que se conoce como modo \textit{in line} o si lo queremos desplegado. Así, consideremos el siguiente ejemplo de texto matemático en un párrafo.
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+Sea $f:[a,b]\rightarrow \mathbb{R}$ una función. Si $f$ es acotada y discontinua en un número finito de puntos, entonces $f$ es integrable.
+\end{minipage}
+} }
+\end{center}
+
+\noindent
+el código del ejemplo anterior es: 
+
+\begin{lstlisting}[frame=single]
+Sea $f:[a,b]\rightarrow \mathbb{R}$ una funcion. Si $f$ es acotada y discontinua
+en un numero finito de puntos, entonces $f$ es integrable.
+\end{lstlisting}
+
+Así, para el modo en linea solo es necesario escribir el texto entre \verb"$... $" o \verb"\(...\)". Por otra parte, para el modo desplegado, consideremos el siguiente ejemplo:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+Sean $f:[a,b]\rightarrow \mathbb{R}$ una función integrable en $[a,b]$ y $c\in[a,b]$. Se tiene que $f$ es integrable en $[a,c]$ y en $[c,b]$, además
+    \[
+        \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx. 
+    \]
+\end{minipage}
+} }
+\end{center}
+
+así, el código del ejemplo anterior es:
+
+\begin{lstlisting}[frame=single]
+Sean $f:[a,b]\rightarrow \mathbb{R}$ una funcion integrable en $[a,b]$ y $c\in[a,b]$.
+Se tiene que $f$ es integrable en $[a,c]$ y en $[c,b]$, ademas
+    \[
+        \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx. 
+    \]
+\end{lstlisting}
+
+Así, para el modo desplegado escribiremos el texto entre \verb"\[...\]" donde el texto escrito se mostrará centrado y en una nueva linea.
+
+\subsection{Tamaño natural}
+
+Como hemos visto en esta sección \LaTeX{} ajusta el tamaño de las fórmulas de acuerdo a si estas se muestran en una linea o en formato desplegado. Sin embargo, en ocasiones necesitamos mostrar <<a tamaño completo>> una fórmula que se encuentra dentro de una linea. En este caso, vamos a utilizar la siguiente sintaxis:
+
+\begin{lstlisting}[frame=single]
+Esta es la formula de una sumatoria $\displaystyle\sum_{k=1}^{n} n^2 = \frac{n(n+1)}{2}$
+\end{lstlisting}
+
+\noindent
+cuyo resultado es:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{10cm}
+Esta es la fórmula de una sumatoria $\displaystyle\sum_{k=1}^{n} n^2 = \frac{n(n+1)}{2}$
+\end{minipage}
+} }
+\end{center}
+
+
+\section{Nuevos comandos}
+
+Desarrollar un nuevo documento requiere de la escritura de comandos o instrucciones que se repiten a lo largo del documento  y que, pasadas algunas lineas, resulta ineficiente. Para ello, vamos a ver algunos ejemplos de «abreviaciones» personalizadas que hemos creado para facilitar la composición de un texto.
+
+\begin{lstlisting}[frame=single]
+\newcommand{\sen}{\mathop{\rm sen}}
+\newcommand{\arcsen}{\mathop{\rm arcsen}}
+\newcommand{\arcsec}{\mathop{\rm arcsec}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\end{lstlisting}
+
+Desarrollar abreviaturas requiere cierta experiencia e ingenio pues se debe hallar un nombre abreviado y que aún no haya sido usado por \LaTeX{} para generar el nuevo comando. En el caso de que se desee reemplazar el contenido de un comando ya existente se reemplaza la instrucción \verb@\newcommand{}@ por \verb@\renewcommand{}@.
+
+\subsection{Comandos con <<parámetros>>}
+
+Un paso más allá de la inclusión de nuevos comandos es el agregar <<parámetros>> a los mismos. Para incluir estos vamos a seguir la siguiente estructura
+
+\begin{lstlisting}[frame=single]
+\newcommand{nombre del comando}[numero de parametros]{comando original #1}
+\end{lstlisting}
+
+Notemos que la inclusión de los parámetros en el comando está dada por \verb@#1@. Así, el parámetro $1$ va a remplazar la posición \verb@#1@. 
+
+\begin{lstlisting}[frame=single]
+\newcommand{\suc}[2][n]{\left(#2\right)_{#1\in\mathbb{\N}}}
+\end{lstlisting}
+
+\newcommand{\suc}[2][n]{\left(#2\right)_{#1\in\mathbb{\N}}}
+
+\begin{center}
+    \fbox{$\suc{x_n}$}
+\end{center}
+
+Para la escritura matemática en general, el proyecto Alephsub0 ha desarrollado un paquete que recopila los comandos matemáticos más usuales además de ciertos ambientes muy útiles a la hora de escribir. Para más información puedes visitar: \href{https://alephsub0.org/recursos-latex/}{https://alephsub0.org/recursos-latex/}. Allí encontrarás el paquete \verb@aleph-comandos.sty@ junto con su documentación. El repositorio con los enlaces de los paquetes para su descarga o vínculo a \emph{Overleaf} los puedes encontrar en: \href{https://git.alephsub0.org/}{https://git.alephsub0.org/}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Subíndices, superíndices}
+
+En la siguiente tabla se encuentran algunos ejemplos sobre el uso de índices y superíndices en la escritura de fórmulas.
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Expresión & Código  \\ \hline
+        $x^p$ & \verb"x^p" \\ \hline
+        $(x_n)_{n\in\mathbb{N}}$ & \verb"(x_n)_{n\in\mathbb{N}}" \\ \hline
+        $a_i^j$ & \verb"a_i^j" \\ \hline
+        $\int_a^b f(x)\, dx$ & \verb"\int_a^b f(x)\, dx"\\ \hline
+        $\sum_{i=1}^n i^2$ & \verb"\sum_{i=1}^n i^2" \\ \hline
+        $2^{2^n}$ & \verb"2^{2^n}" \\ \hline 
+    \end{tabular}
+\end{center}
+
+\section{Fracciones}
+
+En la siguiente tabla se encuentran algunos ejemplos sobre el uso de fracciones con diferentes comandos en la escitura de fórmulas matemáticas:
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Expresión & Código  \\ \hline
+        $\frac{x+1}{x-1}$ & \verb"\frac{x+1}{x-1}" \\ \hline
+        ${x+1 \over; x-1}$ & \verb"{x+1 \over; x-1}" \\ \hline
+        $\left( 1+ \frac{1}{x} \right)^\frac{n+1}{n}$ & \verb"\left( 1+ \frac{1}{x} \right)^\frac{n+1}{n}" \\ \hline
+        ${x+1 \brace x-1}$ & \verb"{x+1 \brace x-1}"\\ \hline
+        ${x+1 \brack x-1}$ & \verb"{x+1 \brack x-1}" \\ \hline
+        $a \stackrel{f}{\rightarrow} b$ & \verb"a \stackrel{f}{\rightarrow} b" \\ \hline 
+        $\displaystyle{\sum_{\substack{0<i< m\\0<j<n}}a_ib_j}$ & \verb"\displaystyle{\sum_{\substack{0<i< m\\0<j<n}}a_ib_j}" \\ \hline 
+        $\prod_{\overset{i=0}{i\neq k}}^{n}\frac{w_i}{(w_i-w_k)}$ & \verb"\prod_{\overset{i=0}{i\neq k}}^{n}\frac{w_i}{(w_i-w_k)}"  \\ \hline
+    \end{tabular}
+\end{center}
+
+\section{Integrales}
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Expresión & Código  \\ \hline
+        $\displaystyle{\int_C\boldsymbol{F}\cdot\, dr}$ & \verb"\displaystyle{\int_C\boldsymbol{F}\cdot\, dr}" \\ \hline
+        $\displaystyle{\oint_C\pmb{F}\cdot\, dr}$ & \verb"\displaystyle{\oint_C\pmb{F}\cdot\, dr}" \\ \hline
+        $\displaystyle{{\iint_D f(x,y)\,dA}}$ & \verb"\displaystyle{{\iint_D f(x,y)\,dA}}" \\ \hline
+        $\displaystyle{{\iiint_Q f(x,y,z)\,dA}}$ & \verb"\displaystyle{{\iiint_Q f(x,y,z)\,dA}}"\\ \hline
+        $\displaystyle{\iiint\limits_Q}$ & \verb"$\displaystyle{\iiint\limits_Q}" \\ \hline
+    \end{tabular}
+\end{center}
+
+
+\section{Raíces}
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Expresión & Código  \\ \hline
+        $\sqrt{x+1}$ & \verb"\sqrt{x+1}" \\ \hline
+        $\displaystyle{ \sqrt[n]{x+\sqrt{x}} }$ & \verb"\displaystyle{ \sqrt[n]{x+\sqrt{x}} }" \\ \hline
+    \end{tabular}
+\end{center}
+
+\section{Puntos}
+    
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    Expresión & Código  \\ \hline
+    $\ldots$ & \verb"\ldots" \\ \hline
+    $\cdots$ & \verb"\cdots" \\ \hline
+    $\vdots$ & \verb"\vdots" \\ \hline
+    $\ddots$ & \verb"\ddots" \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Delimitadores}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    Expresión & Código  \\ \hline
+    $\displaystyle \left[{x+1 \over (x-1)^2} \right]^n$ & \verb"\displaystyle \left[{x+1 \over (x-1)^2} \right]^n" \\ \hline
+    $\int_{a}^{b}2x\, dx = \left. x^2 \right|_{a}^{b}$ & \verb"$\int_{a}^{b}2x\, dx = \left. x^2 \right|_{a}^{b}" \\ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Delimitadores del paquete \texttt{amsmath}}
+
+Una forma alternativa para usar delimitadores que se ajusten a la altura es el uso de los delimitadores proporcionados por el paquete \verb@amsmath@
+
+\bigskip
+\noindent
+\verb@\Biggl,\Biggr, \biggl,\biggr, \Bigl,\Bigr, \bigl,\bigr@
+\bigskip
+
+Así, se tiene el siguiente resultado:
+
+\begin{lstlisting}[frame=single]
+\[
+    \bigg[ \sum_j \Big| \sum_i x_{ij} \Big|^2 \bigg]^{1/2}
+\]
+\end{lstlisting}
+
+\[
+    \bigg[ \sum_j \Big| \sum_i x_{ij} \Big|^2 \bigg]^{1/2}
+\]
+
+
+\section{Llaves y Barras}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    Expresión & Código  \\ \hline
+    $\overline{AB}$ & \verb"\overline{AB}" \\ \hline
+    $\max\left\{a,b\right\}$ & \verb"$\max\left\{a,b\right\}" \\ \hline
+    $\overbrace{(x_i-1)}^{K_i}+\underbrace{(x_i-1)}_{K_i}$ & \verb"\overbrace{(x_i-1)}^{K_i}+\underbrace{(x_i-1)}_{K_i}g(x)" \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Acentos y <<sombreros>>}
+
+Durante la escritura matemática podemos encontrar varios acentos que pueden ser necesarios para ciertas áreas:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    Expresión & Código  \\ \hline
+    $\hat{\imath}$ & \verb"$\hat{\imath}$" \\ \hline
+    $\acute{a}$ & \verb"$\acute{a}$" \\ \hline
+    $\bar{p}$ & \verb"$\bar{p}$" \\ \hline
+    $\vec{p}$ & \verb"$\vec{p}$" \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Vectores con el paquete \emph{esvect}}
+
+Aunque \LaTeX{} nos provee de una gran cantidad de comandos y herramientas para la escritura de texto matemático, es posible usar paquetes adicionales como es el caso del paquete \verb@esvect@ para presentar una notación más estética dando los siguientes resultados:
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Expresión & Código  \\ \hline
+        $\vv{v}$ & \verb"$\vv{v}$" \\ \hline
+        $\vv{A}$ & \verb"$\vv{A}$" \\ \hline
+        $\vv{v \times w}$ & \verb@$\vv{v \times w}$@ \\ \hline
+    \end{tabular}
+\end{center}
+
+\section{Negritas}
+
+La negrita es un recurso que es necesario incluso en textos matemáticos. A continuación presentamos algunas maneras para colocar negritas en el texto matemático:
+
+\subsection{\texttt{boldsymbol o pbm}}
+
+La sintaxis del comando es muy sencilla y requiere incluir el comando y entre llaves el texto a colocar en negritas.
+
+\begin{lstlisting}[frame=single]
+\[
+    \pmb{\int_{a}^{b} f(x)\, dx}
+\]
+\end{lstlisting}
+
+\[
+    \pmb{\int_{a}^{b} f(x)\, dx}
+\]
+
+
+
+\section{Espacios en modo matemático}
+
+\LaTeX{}, por defecto, no deja espacios en modo matemático aunque esto, en general, no representa inconveniente alguno. Sin embargo, si deseamos modificar los espacios podemos usar las siguientes instrucciones:
+
+\begin{itemize}
+    \item \verb@\,@ Incluye un espacio igual a $\frac{3}{18}$ de un espacio \verb@\quad@. 
+    \item \verb@\:@ Incluye un espacio igual a $\frac{4}{18}$ de un espacio \verb@\quad@. 
+    \item \verb@\;@ Incluye un espacio igual a $\frac{5}{18}$ de un espacio \verb@\quad@.
+    \item \verb@\@ Incluye un espacio igual a la mitad de un espacio entre palabras.
+    \item \verb@\!@ Incluye un espacio igual a $-\frac{3}{18}$ de un espacio \verb@\quad@. 
+\end{itemize}
+
+\begin{obs}
+El espacio \verb@\quad@ está dado por el ancho de una $M$ en la fuente usada en el documento.
+\end{obs}
+
+\section{Arreglos}
+
+\begin{lstlisting}[frame=single]
+\[
+    A = \left( 
+        \begin{array}{lcr}
+            a & a+b & k-a \\
+            b & b & k-a-b \\
+            \vdots & \vdots & \vdots \\
+            z & z + z & k-z
+        \end{array}
+    \right)
+\]
+\end{lstlisting}
+
+\[
+    A = \left( \begin{array}{lcr}
+    a & a+b & k-a \\
+    b & b & k-a-b \\
+    \vdots & \vdots & \vdots \\
+    z & z + z & k-z
+    \end{array}
+    \right)
+\]
+
+\begin{lstlisting}[frame=single]
+\[
+    f(x)= \left\{ 
+            \begin{array}{lcl}
+                x^2 & \mbox{ si } & x<0 \\
+                & & \\
+                x-1 & \mbox{ si } & x>0
+            \end{array}
+        \right.
+\]
+\end{lstlisting}
+
+\[
+    f(x)= \left\{ 
+            \begin{array}{lcl}
+                x^2 & \mbox{ si } & x<0 \\
+                & & \\
+                x-1 & \mbox{ si } & x>0
+            \end{array}
+        \right.
+\]
+
+\begin{lstlisting}[frame=single]
+\[
+    \left\{
+        \begin{array}{lclcl}
+        \cos x &=& 0 &\Longrightarrow & x=(2k+1)\,\frac{\pi}{2};\; k \in \Z\\
+        & & & &\\
+        \sen x &=& -1 &\Longrightarrow & x=(4k+3)\,\frac{\pi}{2};\; k \in \Z\\
+        & & & &\\
+        \cos(2x) &=&\frac{1}{2} &\Longrightarrow &\left\{
+            \begin{array}{lcr}
+                x &=& \frac{\pi}{6}+k\pi;\; z \in \Z\\
+                & &\\
+                x &=& -\frac{\pi}{6}+k\pi;\; z \in \Z\\
+            \end{array}
+        \right.\\
+        \end{array}
+    \right.
+\]
+\end{lstlisting}
+
+\[
+    \left\{
+        \begin{array}{lclcl}
+        \cos x &=& 0 &\Longrightarrow & x=(2k+1)\,\frac{\pi}{2};\; k \in \Z\\
+        & & & &\\
+        \sen x &=& -1 &\Longrightarrow & x=(4k+3)\,\frac{\pi}{2};\; k \in \Z\\
+        & & & &\\
+        \cos(2x) &=&\frac{1}{2} &\Longrightarrow &\left\{
+            \begin{array}{lcr}
+                x &=& \frac{\pi}{6}+k\pi;\; z \in \Z\\
+                & &\\
+                x &=& -\frac{\pi}{6}+k\pi;\; z \in \Z\\
+            \end{array}
+        \right.\\
+        \end{array}
+    \right.
+\]
+
+\begin{lstlisting}[frame=single]
+\[
+\begin{array}{rcl}
+    A\cup B \subseteq B & & \\ \hline %linea horizontal
+    x \in A \cup B &\implies & x \in A \vee x \in B \\[0.15cm]
+    %Comentario que recorre tres columnas
+    \multicolumn{3}{l}{\mbox{Por hipotesis,\;} x\in A\implies x\in B} \\[0.15cm]
+    &\implies & x \in B \vee x \in B \\
+    &\implies & x \in B \\
+    &\therefore & x A \cup B \subseteq B \\
+\end{array}
+\]
+\end{lstlisting}
+
+\[
+    \begin{array}{rcl}
+        A\cup B \subseteq B & & \\ \hline %linea horizontal
+        x \in A \cup B &\implies & x \in A \vee x \in B \\[0.15cm]
+        %Comentario que recorre tres columnas
+        \multicolumn{3}{l}{\mbox{Por hipótesis,\;} x\in A\implies x\in B} \\[0.15cm]
+        &\implies & x \in B \vee x \in B \\
+        &\implies & x \in B \\
+        &\therefore & x A \cup B \subseteq B \\
+    \end{array}
+\]
+
+\section{Matrices}
+
+\begin{lstlisting}[frame=single]
+\[
+    \begin{pmatrix}
+        1 & 0 & 0 &  \cdots & 0 \\
+        h_0 & 2(h_0+h_1) & h_1 & \cdots & h_1 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & 0 \\
+         \vdots & \vdots & \vdots & \vdots & 9 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & h_{n-2} \\
+        6 & 0 & 0 & 0 &  1 \\
+    \end{pmatrix}
+\]
+\end{lstlisting}
+
+\[
+    \begin{pmatrix}
+        1 & 0 & 0 &  \cdots & 0 \\
+        h_0 & 2(h_0+h_1) & h_1 & \cdots & h_1 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & 0 \\
+         \vdots & \vdots & \vdots & \vdots & 9 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & h_{n-2} \\
+        6 & 0 & 0 & 0 &  1 \\
+    \end{pmatrix}
+\]
+
+\begin{lstlisting}[frame=single]
+\[
+    \begin{bmatrix}
+        1 & 0 & 0 &  \cdots & 0 \\
+        h_0 & 2(h_0+h_1) & h_1 & \cdots & h_1 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & 0 \\
+         \vdots & \vdots & \vdots & \vdots & 9 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & h_{n-2} \\
+        6 & 0 & 0 & 0 &  1 \\
+    \end{bmatrix}
+\]
+\end{lstlisting}
+
+\[
+    \begin{bmatrix}
+        1 & 0 & 0 &  \cdots & 0 \\
+        h_0 & 2(h_0+h_1) & h_1 & \cdots & h_1 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & 0 \\
+         \vdots & \vdots & \vdots & \vdots & 9 \\
+        0 & h_1 & 2(h_1+h_2) & 2(h_{n-3}+h_{n-2}) & h_{n-2} \\
+        6 & 0 & 0 & 0 &  1 \\
+    \end{bmatrix}
+\]
+
+\section{Alineamiento}
+
+\begin{lstlisting}[frame=single]
+De acuerdo al lema de Euclides tenemos que
+\begin{eqnarray*} % Espacio entre filas aumentado \\[0.2cm]
+    \mbox{mcd}(a,b) & = & \mbox{mcd}(a-r_0q,r_0) \\[0.2cm]
+    & = & \mbox{mcd}(r_1,r_0) \\[0.2cm]
+    & = & \mbox{mcd}(r_1,r_0-r_1q_2)\\[0.2cm]
+    & = & \mbox{mcd}(r_1,r_2) \\[0.2cm]
+    & = & \mbox{mcd}(r_1-r_2q_2,r_2)\\[0.2cm]
+\end{eqnarray*}
+\end{lstlisting}
+
+De acuerdo al lema de Euclides tenemos que
+\begin{eqnarray*} % Espacio entre filas aumentado \\[0.2cm]
+\mbox{mcd}(a,b) & = & \mbox{mcd}(a-r_0q,r_0) \\[0.2cm]
+& = & \mbox{mcd}(r_1,r_0) \\[0.2cm]
+& = & \mbox{mcd}(r_1,r_0-r_1q_2)\\[0.2cm]
+& = & \mbox{mcd}(r_1,r_2) \\[0.2cm]
+& = & \mbox{mcd}(r_1-r_2q_2,r_2)\\[0.2cm]
+\end{eqnarray*}
+
+\section{Ambiente \emph{equation}}
+
+Hasta este punto hemos visto que \LaTeX{} lleva una numeración automática de: capítulos, secciones, subsecciones, entre otros elementos del documento. De la misma manera, el ambiente \verb@equation@ permite llevar una numeración de las <<ecuaciones>> brindando la ventaja de ya ser un modo matemático en si mismo.
+
+\begin{lstlisting}[frame=single]
+\begin{equation}
+    \int_a^b f(x) \, dx = F(a)-F(b)
+\end{equation}
+\end{lstlisting}
+
+\begin{equation}
+    \int_a^b f(x) \, dx = F(a)-F(b)
+\end{equation}
+
+Por otra parte, es posible modificar los contadores de cada una de las <<variables>> empleadas para numerar.
+
+\begin{lstlisting}[frame=single]
+\setcounter{equation}{6}
+\end{lstlisting}
+
+\setcounter{equation}{6}
+
+\begin{equation}
+    S(f,P,C) = \sum_{i,j=1}^n f(c^{ij})\Delta A_{ij}
+\end{equation}
+
+Otra opción en el caso de numerar las ecuaciones es usar el ambiente \verb@subequations@ para obtener una subnumeración de las ecuaciones. A continuación se encuentra un ejemplo de su uso:
+
+\begin{lstlisting}[frame=single]
+\begin{subequations}
+    \begin{equation}
+        \log_{2}(xy)=\log_2x + \log_2y
+    \end{equation}
+    \begin{equation}
+        \log_{2}(a^b)=b\log_{2}a
+    \end{equation}
+\end{subequations}
+\end{lstlisting}
+
+\noindent
+produce:
+
+\begin{subequations}
+    \begin{equation}
+        \log_{2}(xy)=\log_2x + \log_2y
+    \end{equation}
+    \begin{equation}
+        \log_{2}(a^b)=b\log_{2}a
+    \end{equation}
+\end{subequations}
+
+\section{Alineación de ecuaciones}
+
+\subsection{Ambiente \emph{eqnarray}}
+
+Usando el ambiente \verb@eqnarray@ es posible crear arreglos de ecuaciones  de la siguiente forma:
+
+\begin{lstlisting}[frame=single]
+\begin{eqnarray} % Espacio entre filas aumentado \\[0.2cm]
+    \mbox{mcd}(a,b) & = & \mbox{mcd}(a-r_0q,r_0) \\[0.2cm]
+    & = & \mbox{mcd}(r_1,r_0) \\[0.2cm]\nonumber
+    & = & \mbox{mcd}(r_1,r_0-r_1q_2)\\[0.2cm]
+    & = & \mbox{mcd}(r_1,r_2) \\[0.2cm]
+    & = & \mbox{mcd}(r_1-r_2q_2,r_2)\\[0.2cm]
+\end{eqnarray}
+\end{lstlisting}
+
+\noindent
+produce:
+
+\begin{eqnarray} % Espacio entre filas aumentado \\[0.2cm]
+\mbox{mcd}(a,b) & = & \mbox{mcd}(a-r_0q,r_0) \\[0.2cm]
+& = & \mbox{mcd}(r_1,r_0) \\[0.2cm]\nonumber
+& = & \mbox{mcd}(r_1,r_0-r_1q_2)\\[0.2cm]
+& = & \mbox{mcd}(r_1,r_2) \\[0.2cm]
+& = & \mbox{mcd}(r_1-r_2q_2,r_2)\\[0.2cm]
+\end{eqnarray}
+
+\subsection{Ambiente \emph{align}}
+
+\begin{lstlisting}[frame=single]
+\begin{align*}
+    \intertext{Agrupamos,}
+    \frac{a+ay+ax+y}{x+y} &= \frac{ax+ay+x+y}{x+y} &\mbox{Agrupar}\\
+    \intertext{sacamos el factor comun,}
+    &= \frac{a(x+y)+x+y}{x+y} &\mbox{Factor comun}\\
+    &= \frac{(x+y)(a+1)}{x+y} &\mbox{Simplificar}\\
+    &= a+1
+\end{align*}
+\end{lstlisting}
+
+\noindent
+produce:
+
+\begin{align*}
+\intertext{Agrupamos,}
+\frac{a+ay+ax+y}{x+y} &= \frac{ax+ay+x+y}{x+y} &\mbox{Agrupar}\\
+\intertext{sacamos el factor común,}
+&= \frac{a(x+y)+x+y}{x+y} &\mbox{Factor común}\\
+&= \frac{(x+y)(a+1)}{x+y} &\mbox{Simplificar}\\
+&= a+1
+\end{align*}
+
+\section{Ambientes para escritura de texto matemático}
+
+Los ambientes nos permiten definir estilos de texto y formato para determinadas partes del documento, esto facilita la tarea de modificar más tarde el mismo pues basta cambiar la definición del ambiente y no el contenido del documento como tal. Un ejemplo se puede encontrar a continuación: La primera parte del código, define el ambiente y selecciona su tipo:
+
+\begin{lstlisting}[frame=single]
+\theoremstyle{definition}
+\newtheorem{defin}{Definicion}
+
+\theoremstyle{plain}
+\newtheorem{teor}{Teorema}
+\end{lstlisting}
+
+El formato del ambiente está dado por la selección realizada en el comando \verb@\theoremstyle{@\emph{estilo}\verb@}@, los formatos disponibles son:
+
+\begin{itemize}
+    \item \verb@plain@ texto en itálica, espacio extra arriba y abajo;
+    \item \verb@definition@ texto en romana\footnote{Romana se refiere a la fuente normal o «común» en inglés denominada \emph{upright}.}, espacio extra arriba y abajo;
+    \item \verb@remark@ texto en romana, no agrega espacio extra.
+\end{itemize}
+
+Así, tenemos el siguiente código de ejemplo:
+
+\begin{lstlisting}[frame=single]
+\begin{defin}[Subconjunto]
+Sean $A$ y $B$ conjuntos, se dice que $A$ es subconjunto de $B$ (y se nota $A\subseteq B$)
+si y solo si
+\[
+    x\in A\Rightarrow x\in B.
+\]
+\end{defin}
+
+
+\begin{teor}
+Sean $A$ y $B$ conjuntos, si $A\subseteq B$ y $B\subseteq A$ entonces $A=B$.
+\end{teor}
+\end{lstlisting}
+
+\noindent
+produce:
+\begin{defin}[Subconjunto]
+Sean $A$ y $B$ conjuntos, se dice que $A$ es subconjunto de $B$ (y se nota $A\subseteq B$) si y solo si
+\[
+    x\in A\Rightarrow x\in B.
+\]
+\end{defin}
+
+
+\begin{teor}
+Sean $A$ y $B$ conjuntos, si $A\subseteq B$ y $B\subseteq A$ entonces $A=B$.
+\end{teor}
+
+\begin{advertencia}
+Note las diferencias entre el formato definido para teorema y definición, ¿concuerdan con lo mencionado respecto a los estilos de teorema?
+\end{advertencia}
+
+\section{Ejercicios}
+
+A continuación se encuentran algunas fórmulas y desarrollos matemáticos, sugerimos que el lector desarrolle los mismos a fin de entrenarse en el uso de \LaTeX{}.
+
+\paragraph{Ejercicio 1.} Deducir la identidad $\cos(\alpha)\cos(\beta)=\frac 1 2 {\cos(\alpha+\beta)+\cos(\alpha-\beta)}$.
+
+\begin{proof}[Solución]
+    Sean $\alpha,\ \beta\in\mathbb{R}$, se sigue que
+    \begin{equation}\label{eq:001}
+        \cos(\alpha+\beta)=\cos(\alpha)\cos(\beta)-\sen(\alpha)\sen(\beta),
+    \end{equation}
+    y
+    \begin{equation}\label{eq:002}
+        \cos(\alpha-\beta)=\cos(\alpha)\cos(\beta)+\sen(\alpha)\sen(\beta).
+    \end{equation}
+    Sumando las identidades \eqref{eq:001} y \eqref{eq:002}
+    \begin{equation*}
+      \cos(\alpha+\beta)+\cos(\alpha-\beta)=2\cos(\alpha)\cos(\beta),
+    \end{equation*}
+    por lo tanto
+    \begin{equation*}
+      \cos(\alpha)\cos(\beta)=\frac {\cos(\alpha+\beta)+\cos(\alpha-\beta)} 2.\qedhere
+    \end{equation*}
+\end{proof}
+
+\paragraph{Ejercicio 2.} Calcular $\cos(u+\frac \pi 2)$.
+\begin{proof}[Solución]
+Conociendo que $\cos(\frac \pi 2)=0$ y $\sen(\frac \pi 2)=1$, se sigue que
+\begin{align*}
+ \cos\left(u+\frac \pi 2\right)&=\cos(u)\cos\left(\frac \pi 2\right)-\sen(u)\sen\left(\frac \pi 2\right)\\
+    &=0\cos(u)-1\sen(u)\\
+    &=-\sen(u)\qedhere
+\end{align*}
+
+\end{proof}
+
+\begin{itemize}
+\item Desarrollo de formulas:
+\begin{align}
+L_j(x)&=\prod_{\substack{i=1\\i\not=j}}^n\frac{(x-x_i)}{(x_j-x_i)}\\
+  &=\frac{(x-x_1)(x-x_2)\cdots(x-x_{j-1})(x-x_{j+1})\cdots(x-x_n)}{(x_j-x_1)(x_j-x_2)\cdots(x_j-x_{j-1})(x_j-x_{j+1})\cdots(x_j-x_n)}\notag
+\end{align}
+
+\item Formulas largas:
+\begin{align}
+f_h (x,y)&=E\int_0^t L_{x,y_\varphi}du\notag\\
+&= h\int L_{x, z} dz \notag\\
+&\phantom{=} {} + h \biggl[ \frac 1 {t}\bigg( E \int_0^{t}  L_{x, y^x}ds- t\int L_{x,z}dz) \biggr)  \notag\\
+&\phantom{= {} + h \biggl[} +\frac 1 {t}\bigg( E \int_0^{t}  L_{x, y^x} ds - E\int_0^t L_{x,y_\varphi} ds \biggr)\biggr]
+\end{align}
+
+\item Funciones
+\begin{equation*}
+\begin{array}{rcl}
+f\colon \mathbb{R}&\longrightarrow&\mathbb{R}\\
+x&\longmapsto&f(x)
+\end{array}
+\end{equation*}
+
+\begin{equation*}
+\delta_{i,j}=\begin{cases}
+0&\text{si }i=j\\
+1&\text{si }i\not=j
+\end{cases}
+\end{equation*}
+
+\item Sistemas de ecuaciones
+\begin{equation}
+\left\{\begin{array}{cccccc}
+x&+y&+z&+w&=&1\\
+&3y&&+5w&=&2\\
+5x&&-2z&&=&4
+\end{array}\right.
+\end{equation}
+
+\item Matrices
+\begin{equation*}
+\begin{bmatrix}
+1\\2\\3\\4\\5
+\end{bmatrix}
+\end{equation*}
+
+\begin{gather}
+A=\begin{pmatrix}
+a_{11}&\cdots&a_{1n}\\
+\vdots&\ddots&\vdots\\
+a_{n1}&\cdots&a_{nn}
+\end{pmatrix}\\
+\Delta_A(\lambda)=|\lambda I-A|=\begin{vmatrix}
+\lambda-a_{11}&\cdots&a_{1n}\\
+\vdots&\ddots&\vdots\\
+a_{n1}&\cdots&\lambda-a_{nn}
+\end{vmatrix}
+\end{gather}
+\item Signos de agrupación
+
+\begin{equation*}
+\left.a\left(\frac{\left(\dfrac{a+t}{a-t}+t!\right)^{t-1}}{\sen^2 t+\sen^2 t}-\sqrt[5]{t+1}\right)\right|_{t=0}
+\end{equation*}
+\end{itemize}
+
+
+\section{Referencias}
+
+Para más información detallada sobre el funcionamiento del modo matemático puede consultar los siguientes vínculos:
+
+\begin{itemize}
+    \item 
+        \url{https://tex.loria.fr/general/Voss-Mathmode.pdf}
+    \item
+        \url{http://mirrors.ucr.ac.cr/CTAN/info/symbols/comprehensive/}
+\end{itemize}
+
+\end{document} 
