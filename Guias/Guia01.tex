@@ -13,6 +13,8 @@
 \tema{Primeros pasos}
 %%--> Opciones adicionales
 
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%% Comienzo del documento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,7 +118,7 @@ El archivo que contiene el código fuente posee la extensión \texttt{.tex} mien
         \textbf{Tipo de archivo} & \textbf{Extensiones más comunes}  \\
         Código base &  \texttt{.tex} \\
         Base de datos para bibliografía & \texttt{.bib}\\
-        Índice & \texttt{ind}\\
+        Índice & \texttt{.ind}\\
         Imágenes & \texttt{.ps},\texttt{.eps},\texttt{.tif},\texttt{.png},\texttt{.jpg},\texttt{.gif},\texttt{.pdf}\\
         Clases  & \texttt{.cls}\\
         Paquetes & \texttt{.sty}\\
@@ -149,7 +151,7 @@ Para el desarrollo de los ejemplos usaremos:
 \documentclass[10pt]{article}
 \end{lstlisting}
 
-Un documento básico en \LaTeX{} se compone de dos partes: el \textit{preámbulo} y el \textit{cuerpo}. El preámbulo, incluye la \emph{clase}\footnote{Una clase es un archivo de extensión \texttt{.sty} que define el formato del documento.} del documento, paquetes a usar y configuraciones adicionales, mientras que el cuerpo contiene el texto y fórmulas matemática que van a ser mostradas.
+Un documento básico en \LaTeX{} se compone de dos partes: el \textit{preámbulo} y el \textit{cuerpo}. El preámbulo, incluye la \emph{clase}\footnote{Una clase es un archivo de extensión \texttt{.cls} que define el formato del documento.} del documento, paquetes a usar y configuraciones adicionales, mientras que el cuerpo contiene el texto y fórmulas matemática que van a ser mostradas.
 
 
 \begin{lstlisting}[frame=single]
@@ -306,7 +308,7 @@ La \emph{longitud} en el caso más simple es sólo un número más una unidad.  
 \end{table}
 
 \noindent
-La orden \verb"\fill" genera un espacio que se expande hasta llenar todo el espacio sobrante en un renglón o página.
+La orden \verb"\hfill" genera un espacio que se expande hasta llenar todo el espacio sobrante en un renglón o página.
 
 \subsubsection{Espaciado Vertical}
 

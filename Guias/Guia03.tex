@@ -110,7 +110,7 @@ Así, para el modo desplegado escribiremos el texto entre \verb"\[...\]" donde e
 Como hemos visto en esta sección \LaTeX{} ajusta el tamaño de las fórmulas de acuerdo a si estas se muestran en una linea o en formato desplegado. Sin embargo, en ocasiones necesitamos mostrar <<a tamaño completo>> una fórmula que se encuentra dentro de una linea. En este caso, vamos a utilizar la siguiente sintaxis:
 
 \begin{lstlisting}[frame=single]
-Esta es la formula de una sumatoria $\displaystyle\sum_{k=1}^{n} n^2 = \frac{n(n+1)}{2}$
+Esta es la formula de una sumatoria $\displaystyle\sum_{k=1}^n n = \frac{n(n+1)}{2}$
 \end{lstlisting}
 
 \noindent
@@ -120,7 +120,7 @@ cuyo resultado es:
 { \fboxsep 12pt
 \fcolorbox {black}{white}{
 \begin{minipage}[t]{10cm}
-Esta es la fórmula de una sumatoria $\displaystyle\sum_{k=1}^{n} n^2 = \frac{n(n+1)}{2}$
+Esta es la fórmula de una sumatoria $\displaystyle\sum_{k=1}^{n} n = \frac{n(n+1)}{2}$
 \end{minipage}
 } }
 \end{center}
@@ -317,7 +317,7 @@ Aunque \LaTeX{} nos provee de una gran cantidad de comandos y herramientas para 
 
 La negrita es un recurso que es necesario incluso en textos matemáticos. A continuación presentamos algunas maneras para colocar negritas en el texto matemático:
 
-\subsection{\texttt{boldsymbol o pbm}}
+\subsection{\texttt{boldsymbol} o \texttt{pmb}}
 
 La sintaxis del comando es muy sencilla y requiere incluir el comando y entre llaves el texto a colocar en negritas.
 
