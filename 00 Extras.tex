@@ -1,0 +1,299 @@
+\PassOptionsToPackage{table}{xcolor}
+
+\documentclass[a4,11pt]{aleph-notas-alpha}
+
+%%--> Paquetes adicionales
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{multicol}
+\usepackage{fvextra}
+%%--> Preámbulo del material
+\input{Preambulo-pdfTeX}
+
+% -- Datos del libro
+\nota{Guía 2}
+\tema{Primeros pasos}
+%%--> Opciones adicionales
+\DontPrintSemicolon
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+\tableofcontents
+
+\newpage
+\vspace*{-18mm}
+
+
+\begin{tabla}[label={tab:papersize}]{Tamaños de papel}
+\rowcolors{2}{colordef!17}{colordef!10}
+  \begin{tabular}{ccccccc}
+    a0paper & a1paper & a2paper & a3paper & a4paper & a5paper & a6paper \\ b0paper & b1paper & b2paper & b3paper & b4paper & b5paper &  b6paper \\ c0paper & c1paper & c2paper & c3paper & c4paper & c5paper & c6paper \\ 
+    b0j & b1j & b2j & b3j& b4j& b5j& b6j \\
+    ansiapape & ansibpaper & ansicpaper & ansidpaper & ansiepaper & letterpaper & executivepaper \\  legalpaper 
+  \end{tabular}
+\end{tabla}
+
+Por otra parte, los parámetros de medidas disponibles y más comunes son:
+
+\begin{itemize}
+    \item Ancho de texto (\texttt{textwidth})
+    \item Altura de texto (\texttt{textheight})
+    \item Margen superior (\texttt{top, tmargin})
+    \item Margen inferior (\texttt{bottom, bmargin})
+    \item Margen izquierdo (\texttt{left, lmargin, inner})
+    \item Margen derecho (\texttt{right, rmargin, outer})
+\end{itemize}
+
+Existen opciones adicionales e información que puede ser consultada en la documentación del paquete, aunque un breve resumen se encuentra en la siguiente imagen:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Imagenes/Layout-dimensions.png}
+\end{figure}
+
+\newpage
+
+
+El paquete babel es una de las «herramientas» básicas para la composición de textos pues permite modificar el idioma del documento; En algunos casos este paquete puede ser reemplazado por el siguiente código que modifica «manualmente» los parámetros que normalmente serían modificados por \texttt{babel}
+
+\begin{tcbcodigo} \begin{lstlisting}
+\renewcommand{\contentsname}{Contenido}
+\renewcommand{\partname}{Parte}
+\renewcommand{\appendixname}{Ap\'endice}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\AtBeginDocument{\renewcommand\tablename{Tabla}}
+\renewcommand{\abstractname}{Resumen}
+\renewcommand{\refname}{Bibliograf\'{\i}a}
+\end{lstlisting} \end{tcbcodigo}
+
+\begin{advertencia}
+En general, se recomienda usar los acentos con la forma \verb@\'@ en lugar del acento directo desde el teclado.
+\end{advertencia}
+
+
+
+
+
+El archivo que contiene el código fuente posee la extensión \texttt{.tex} mientras que el archivo que contiene los registros del proceso de compilación poseen la extensión  \texttt{.log}. Una tabla completa con los archivos más usuales en la compilación de un documento se encuentran a continuación:
+
+\begin{tabla}[label={tab:2.1}]{Tipos de archivos usados en \TeX{} y \LaTeX{}}
+    \centering
+    \rowcolors{2}{colordef!17}{colordef!10}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Tipo de archivo} & \textbf{Extensiones más comunes}  \\ \midrule
+        Código base &  \texttt{.tex} \\ 
+        Base de datos para bibliografía & \texttt{.bib}\\
+        Índice & \texttt{.ind}\\
+        Imágenes & \texttt{.ps},\texttt{.eps},\texttt{.tif},\texttt{.png},\texttt{.jpg},\texttt{.gif},\texttt{.pdf}\\
+        Clases  & \texttt{.cls}\\
+        Paquetes & \texttt{.sty}\\
+        Auxiliar & \texttt{.aux}\\
+        Tabla de contenidos & \texttt{.toc}\\
+        Lista de figuras\fs/\fs Tablas & \texttt{.lof},\texttt{.lot}\\
+        Medidas del tipo & \texttt{.tfm}\\
+        Transcripción & \texttt{.log}\\
+        Índice alfabético & \texttt{.idx},\texttt{.ind}\\
+        TrueType & \texttt{.ttf}\\
+        OpenType & \texttt{.otf}\\
+        \bottomrule
+    \end{tabular}
+\end{tabla}
+
+
+Regresando a la estructura del archivo fuente tenemos lo siguiente: 
+El primer comando especifica la \textit{clase} de documento que vamos a generar y tiene la siguiente estructura:
+
+\begin{tcbcodigo} \begin{lstlisting}
+\documentclass[Opciones del documento]{Tipo de documento}
+\end{lstlisting} \end{tcbcodigo}
+
+\noindent
+Para el desarrollo de los ejemplos usaremos:
+
+\begin{tcbcodigo} \begin{lstlisting}
+\documentclass[10pt]{article}
+\end{lstlisting} \end{tcbcodigo}
+
+Un documento básico en \LaTeX{} se compone de dos partes: el \textit{preámbulo} y el \textit{cuerpo}. El preámbulo, incluye la \emph{clase}\footnote{Una clase es un archivo de extensión \texttt{.cls} que define el formato del documento.} del documento, paquetes a usar y configuraciones adicionales, mientras que el cuerpo contiene el texto y fórmulas matemática que van a ser mostradas.
+
+
+\begin{tcbcodigo} \begin{lstlisting}
+% Preambulo
+\documentclass[10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+
+\begin{document}
+% Cuerpo
+Hola Mundo
+\end{document}
+\end{lstlisting} \end{tcbcodigo}
+
+\section{Escritura de texto}
+
+\subsection{Espacios}
+
+\LaTeX \hspace{3pt} trata todos los caracteres en blanco, tales como el espacio en blanco o el tabulador, como un solo espacio. El espacio en blanco al principio de una linea se ignora, y un salto de linea aislado se trata como espacio en blanco. Una linea vacía entre dos lineas de texto define el fin de un párrafo. Varias lineas vacías se tratan igual que una sola linea vacía.
+
+
+\subsubsection{Espacios Horizontal}
+
+\LaTeX\hspace{1.5pt} determina los espacios entre palabras y oraciones automáticamente.  Para añadir espacio horizontal, se usa \verb|\hspace{|\emph{longitud}\verb|}|. Si el espacio debiera mantenerse incluso si cae al final o al principio de renglón, use \verb|\hspace*| en  lugar de \verb|\hspace|.
+\noindent
+La \emph{longitud} en el caso más simple es sólo un número más una unidad.  Las unidades más importantes se listan en el cuadro~\ref{units}.
+
+\begin{tabla}[label={units}]{\TeX \hspace{1.5pt} Unidades.}
+  \rowcolors{2}{colordef!17}{colordef!10}
+  \begin{tabular}{@{}rl@{}}
+    \toprule
+    \textbf{Código} & \textbf{Descripción} \\ \midrule
+    \texttt{mm}          & milímetro $\approx 1/25$~pulgada \\
+    \texttt{cm}          & centímetro = 10~mm  \\
+    \texttt{in}          & pulgada $=$ 25,4~mm \\
+    \texttt{pt}          & punto $\approx 1/72$~pulgada $\approx \frac{1}{3}$~mm  \\
+    \texttt{em}          & $\approx$ anchura de una `M' en la fundición actual \\
+    \texttt{ex}          & $\approx$ altura de una `x' en la fundición actual \\
+    \EscVerb{\\baselineskip} & altura de un salto de linea \\ \bottomrule
+  \end{tabular}
+\end{tabla}
+
+\noindent
+La orden \verb"\hfill" genera un espacio que se expande hasta llenar todo el espacio sobrante en un renglón o página.
+
+\subsubsection{Espaciado Vertical}
+
+El espacio entre párrafos, secciones, subsecciones,\ldots{}  lo determina automáticamente \LaTeX.  Si es necesario, un espacio vertical adicional \emph{entre dos párrafos} puede añadirse con la orden \verb|\vspace{|\emph{longitud}\verb|}|. Si el espacio debe preservarse en lo alto o en lo bajo de la página, use la versión  de la orden con asterisco, \verb|\vspace*|, en lugar de \verb|\vspace|. Espacio adicional entre dos lineas del \emph{mismo} párrafo o dentro de una tabla se indica con el comando \verb|\\[|\emph{longitud}\verb|]|
+
+\subsubsection{Espacio duro}
+
+En algunos casos se requiere colocar espacios pero estos no deben separarse en un salto de linea, estos se conocen como espacios duros o irrompibles pues de coincidir al final de una linea mueven todo el bloque de texto y no permiten que se separen. Para introducir este tipo de espacios usamos una virgulilla (\verb@~@).
+
+\subsection{Caracteres especiales}
+
+Los siguientes símbolos son caracteres reservados que tienen un significado especial en \LaTeX. Si los escribimos directamente, no se imprimirán, sino que obligarán a \LaTeX a hacer cosas que no se pretendía hacer.
+ \begin{center}
+  \verb.#  $  %  ^  &  _  {  }  ~  \ ". %$
+ \end{center}
+
+Se pueden usar algunos de estos caracteres añadiendo una barra invertida como prefijo:
+ \begin{center}
+  \verb.\# \$ \% \^{} \& \_ \{ \} \~{}.
+ \end{center}
+obteniendo así los símbolos: \# \$ \% \^{} \& \_ \{ \} \~{}.
+
+Para la barra invertida se deberá escribir \verb@\backslash@. y la forma correcta de poner comillas es usar dos~\textasciigrave~(acentos graves) para abrirlas y dos~\textquotesingle~(apóstrofos) para cerraras.
+
+
+\subsection{Alineación (\emph{flushleft}, \emph{flushright} y \emph{center})}
+
+Los entornos \texttt{flushleft} y \texttt{flushright} generan párrafos alineados a la izquierda o a la derecha respectivamente. El entorno \texttt{center} genera texto centrado.
+
+\subsection{Fundiciones y tamaños}
+
+\LaTeX\hspace{1.5pt} escoge la fundición y el tamaño de fundición apropiados basándose en la estructura lógica del documento (secciones, notas al pie, \ldots).   Para cambiar fundiciones y tamaños se puede usar las órdenes listadas en los cuadros~\ref{fonts} y~\ref{sizes}. El cuadro~\ref{tab:pointsizes}
+muestra los tamaños absolutos en puntos para estas órdenes según se implementan en las clases de documentos normales.
+
+\begin{tabla}[label={fonts}]{Fundiciones}       
+ \rowcolors{2}{colordef!17}{colordef!10}
+  \begin{tabular}{@{}rl@{\qquad}rl@{}}
+    \toprule
+    \textbf{Código} & \textbf{Descripción} & \textbf{Código} & \textbf{Descripción} \\ \midrule
+    \EscVerb{\\textrm{...}}        &      \textrm{{rematada}}&
+    \EscVerb{\\textsf{...}}        &      \textsf{{palo seco}}\\
+    \EscVerb{\\textmd{...}}        &      \textmd{peso medio}&
+    \EscVerb{\\textbf{...}}        &      \textbf{{negrita}}\\
+    \EscVerb{\\textup{...}}      &       \textup{{recta}}&
+    \EscVerb{\\textit{...}}        &       \textit{{cursiva}}\\
+    \EscVerb{\\textsl{...}}        &       \textsl{{oblicua}}&
+    \EscVerb{\\textsc{...}}        &       \textsc{{Versalitas}}\\
+    \EscVerb{\\emph{...}}          &            \emph{destacada} &
+    \EscVerb{\\texttt{...}}        &      \texttt{de máquina}\\\bottomrule
+  \end{tabular}
+\end{tabla}
+
+\begin{tabla}[label={sizes}]{Tamaños de fundición.}
+\index{font size}
+\rowcolors{2}{colordef!17}{colordef!10}
+\begin{tabular}{@{}ll}
+\toprule
+\textbf{Código} & \textbf{Descripción} \\ \midrule
+\EscVerb{\\tiny}      & \tiny        tiny\\
+\EscVerb{\\scriptsize}   & \scriptsize  scriptsize\\
+\EscVerb{\\footnotesize} & \footnotesize  footnotesize\\
+\EscVerb{\\small}        &  \small          small\\
+\EscVerb{\\normalsize}   &  \normalsize  normalsize \\
+\EscVerb{\\large}        &  \large       large\\
+\EscVerb{\\Large}        &  \Large       Large \\[5pt]
+\EscVerb{\\LARGE}        &  \LARGE       LARGE \\[5pt]
+\EscVerb{\\huge}         &  \huge        huge \\[5pt]
+\EscVerb{\\Huge}         &  \Huge        Huge\\[5pt]\bottomrule
+\end{tabular}
+\end{tabla}
+
+\begin{tabla}[label={tab:pointsizes}]{Tamaños absolutos en puntos para las clases normales.}
+\rowcolors{2}{colordef!17}{colordef!10}
+\begin{tabular}{lrrr}
+\toprule
+\multicolumn{1}{c}{\textbf{Tamaños}} &
+\multicolumn{1}{c}{\textbf{10pt (por omisión) }} &
+          \multicolumn{1}{c}{\textbf{opción 11pt}}  &
+          \multicolumn{1}{c}{\textbf{opción 12pt}}\\ \midrule
+\EscVerb{\\tiny}       & 5pt  & 6pt & 6pt\\
+\EscVerb{\\scriptsize} & 7pt  & 8pt & 8pt\\
+\EscVerb{\\footnotesize} & 8pt & 9pt & 10pt \\
+\EscVerb{\\small}        & 9pt & 10pt & 11pt \\
+\EscVerb{\\normalsize} & 10pt & 11pt & 12pt \\
+\EscVerb{\\large}      & 12pt & 12pt & 14pt \\
+\EscVerb{\\Large}      & 14pt & 14pt & 17pt \\
+\EscVerb{\\LARGE}      & 17pt & 17pt & 20pt\\
+\EscVerb{\\huge}       & 20pt & 20pt & 25pt\\
+\EscVerb{\\Huge}       & 25pt & 25pt & 25pt\\\bottomrule
+\end{tabular}
+\end{tabla}
+
+\section{Otros comandos}
+
+A continuación se encuentra una pequeña lista de otros comandos útiles en el desarrollo de documentos:
+
+\begin{itemize}
+    \item \verb@\renewcommand{\baselinestretch}{1.5}@ Modificación del interlineado
+    \item \verb@\pagestyle{empty}@ Eliminar numeración de página
+    \item \verb@\parindent=0mm@ Eliminar las sangría
+    \item \verb@\newpage@ Agrega una nueva página
+    \item \verb@\pagebreak@ Inserta un salto de página
+    \item \verb@\today@ Imprime la fecha actual
+\end{itemize}
+
+
+\subsection{Separación de palabras}
+
+En general, con el paquete babel aseguramos que la mayoría de las palabras se separen correctamente. Sin embargo, es posible que algunas palabras no se separen correctamente, para subsanar este error podemos especificar la forma para separar las palabras de la siguiente manera:
+
+\begin{tcbcodigo} \begin{lstlisting}
+Electroence\-falografista
+\end{lstlisting} \end{tcbcodigo}
+
+Así, esto produce el siguiente resultado:
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{2cm}
+Electroence\-falografista
+\end{minipage}
+} }
+\end{center}
+\end{document} 

@@ -1,0 +1,92 @@
+\PassOptionsToPackage{table}{xcolor}
+
+\documentclass[a4,11pt]{aleph-notas-alpha}
+
+%%--> Paquetes adicionales
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{multicol}
+
+%%--> Preámbulo del material
+\input{Preambulo-pdfTeX}
+
+% -- Datos del libro
+\nota{Guía 2}
+\tema{Primeros pasos}
+%%--> Opciones adicionales
+\DontPrintSemicolon
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+\tableofcontents
+
+\newpage
+\vspace*{-18mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Escritura de texto}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Títulos, capítulos y secciones}
+
+\begin{advertencia}
+En general, se debe permitir que \LaTeX{} de el formato a los títulos y subtítulos mediante los comandos de sección, sub-sección, etc.
+\end{advertencia}
+
+\LaTeX{} permite dividir el documento en capítulos, secciones y subsecciones mediante órdenes especiales que toman el título de la sección como argumento.
+
+
+
+\begin{tcbLaTeXs}
+ \begin{enumerate}
+   \item 
+        Item de primer nivel
+   \item
+        Item de primer nivel
+   \begin{enumerate}
+    \item
+        Segundo nivel item
+    \item
+        Segundo nivel item
+     \begin{enumerate}
+       \item Item de tercer nivel
+       \item Item de tercer nivel
+       \begin{enumerate}
+         \item Item de cuarto nivel
+         \item Item de cuarto nivel
+       \end{enumerate}
+     \end{enumerate}
+   \end{enumerate}
+ \end{enumerate}
+\end{tcbLaTeXs}
+
+\begin{tcbLaTeXb}
+ \begin{enumerate}
+   \item 
+        Item de primer nivel
+   \item
+        Item de primer nivel
+   \begin{enumerate}
+    \item
+        Segundo nivel item
+    \item
+        Segundo nivel item
+     \begin{enumerate}
+       \item Item de tercer nivel
+       \item Item de tercer nivel
+       \begin{enumerate}
+         \item Item de cuarto nivel
+         \item Item de cuarto nivel
+       \end{enumerate}
+     \end{enumerate}
+   \end{enumerate}
+ \end{enumerate}
+\end{tcbLaTeXb}
+
+\end{document} 

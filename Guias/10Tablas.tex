@@ -1,0 +1,401 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%% --> Comandos adicionales
+\usepackage{textcomp}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{float}
+\input{preambulo_material}
+
+
+% -- Datos del libro
+\nota{Guía 10}
+\tema{Tablas}
+
+%% ---> Nuevos tipos de columnas
+\newcolumntype{G}{>{\color{red}$\pm$}c}
+\newcolumntype{C}[1]{>{\hspace{0pt}\centering\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+
+\titleformat{name=\section,numberless}[display]
+  {\vspace*{-2mm}\bfseries\scshape\centering}
+    {}{1ex}
+    {\color{colortext}\large\titlerule\vspace{.05ex}
+     }
+    [\color{colortext}\vspace{.2ex}\titlerule]
+
+\definecolor{micolor}{rgb}{.6,.5,.4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+\tableofcontents
+
+\section{Tablas}
+
+Para la creación de tablas usamos el ambiente \verb@tabular@, este tiene la siguiente estructura:
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{(*@\emph{formato}@*)}
+(*@\emph{contenido de la tabla}@*)
+\end{tabular}
+\end{lstlisting}
+
+El parámetro \emph{formato} especifica la alineación de la columna y los separadores que existen en ella; a continuación se encuentra una lista de los formatos de columna disponibles. Para la creación de una tabla es necesario especificar el número de columnas, mientras que no se requiere indicar el número de filas.
+
+\begin{itemize}
+    \item \verb@l@ alinea la columna a la izquierda;
+    \item \verb@r@ alinea la columna a la derecha;
+    \item \verb@c@ alinea la columna al centro;
+    \item \verb@p{@\emph{longitud}\verb@}@ indica una columna con la longitud especificada, las unidades de medida disponibles son las especificadas en la guía 1.
+    \item \verb@|@ indica una linea vertical de separación entre columnas.
+\end{itemize}
+
+Por otra parte, dentro del ambiente se usan los siguientes delimitadores:
+
+\begin{itemize}
+    \item \verb@&@ indica un cambio de columna;
+    \item \verb@\\@ indica un salto de fila;
+    \item \verb@\hline@ inserta una linea horizontal en la tabla;
+    \item \verb@\cline{a-b}@ inserta una linea horizontal desde la columna $a$ a la columna $b$.
+\end{itemize}
+
+Un ejemplo para la generación de una tabla se encuentra a continuación:
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Ciclo N$^{\circ}$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+    1   & $245 \pm 5,5$ &	3 \\ \hline
+    2	& $260 \pm 5,5$ &	8 \\ \hline
+    3	& $275 \pm 5,5$ &	8 \\ \hline
+    4	& $287 \pm 5,5$ &	8 \\ \hline
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+   \hline
+    \textbf{Ciclo N$^{\circ}$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+    1   & $245 \pm 5,5$ &	3 \\ \hline
+    2	& $260 \pm 5,5$ &	8 \\ \hline
+    3	& $275 \pm 5,5$ &	8 \\ \hline
+    4	& $287 \pm 5,5$ &	8 \\ \hline
+  \end{tabular}
+\end{center}
+
+Notemos que no es necesario incluir lineas verticales que separan a las columnas:
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{ccc}
+    \toprule
+    \textbf{Ciclo N$^\circ$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \midrule
+    1   & $245 \pm 5,5$ &	3 \\[1mm]
+    2	& $260 \pm 5,5$ &	8 \\[1mm]
+    3	& $275 \pm 5,5$ &	8 \\[1mm]
+    4	& $287 \pm 5,5$ &	8 \\
+    \bottomrule
+\end{tabular}
+\end{lstlisting}
+
+
+\begin{center}
+  \begin{tabular}{|cc|c|}
+   \hline
+    \textbf{Ciclo N$^\circ$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+    1   & $245 \pm 5,5$ &	3 \\
+    2	& $260 \pm 5,5$ &	8 \\
+    % 3	& $275 \pm 5,5$ &	8 \\[1mm]
+    % 4	& $287 \pm 5,5$ &	8 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Unir celdas}
+
+Una de las primeras operaciones con las que nos podemos topar en la generación de una tabla es la necesidad de unir ciertas celdas. Para ello vamos a recurir al comando \verb@\multicolumn@, con la siguiente sintaxis
+
+\begin{lstlisting}[frame=single]
+\multicolumn{numero de columnas}{alineacion}{texto a colocar}
+\end{lstlisting}
+
+\subsection{Paquete \emph{booktabs}}
+
+Este paquete se utiliza para tener algunas opciones adicionales para tablas como lineas con un grosor distinto para una mejor presentación.
+
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{cccccccc}
+    \toprule
+    \multirow{2}{*}{\textbf{COMPOSICION}} & \multicolumn{7}{c}{\textbf{FORMULACION}}\\ 
+    \cmidrule{2-8}
+    & \textbf{43} & \textbf{44} & \textbf{45} & \textbf{46} & \textbf{47} & 
+    \textbf{48} & \textbf{49}\\ \midrule
+    Poliamida-colageno    & 34,8  & 34,4 &	35  & 25  &	40  & 34,9  & 34,95\\[1mm] 
+    Acrilamida            & 45	   & 45	  & 45	& 45  & 45	& 45	& 45   \\[1mm]
+    Etilenglicol          & 10    & 10	  & 10	& 10  & 10	& 10	& 10   \\[1mm]
+    Reticulante (DMEGL)   & 0,2   & 0,6  &--- & --- &	--- & 0,10	& 0,05 \\[1mm]
+    Colageno hidrolizado  & 10	   & 10	  & 10	& 20  &5	& 10	& 10   \\[1mm]
+    \bottomrule
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+ \begin{tabular}{cccccccc}
+  \toprule
+  \multirow{2}{*}{\textbf{COMPOSICIÓN}} & \multicolumn{7}{c}{\textbf{FORMULACIÓN}}\\ 
+  \cmidrule{2-8}
+    & \textbf{43} & \textbf{44} & \textbf{45} & \textbf{46} & \textbf{47} & \textbf{48} & \textbf{49}\\ \midrule
+  Poliamida-colágeno    & 34,8  & 34,4 &	35  & 25  &	40  & 34,9  & 34,95\\[1mm] 
+  Acrilamida           & 45	   & 45	  & 45	& 45  & 45	& 45	& 45   \\[1mm] \bottomrule
+%   Etilenglicol          & 10    & 10	  & 10	& 10  & 10	& 10	& 10   \\[1mm]
+%   Reticulante (DMEGL)   & 0,2   & 0,6  &	--- & --- &	--- & 0,10	& 0,05 \\[1mm]
+%   Colágeno hidrolizado  & 10	   & 10	  & 10	& 20  &5	& 10	& 10   \\[1mm]
+ \end{tabular}
+\end{center}
+
+\subsection{Paquete \emph{tabularx}}
+
+Muchos de los ambientes y herramientas de \LaTeX{} se ven limitados por sus caracteristicas. En el caso de las tablas, para agregar más funciones vamos a incluir el paquete \verb@tabularx@
+
+\subsubsection{Nuevos tipos de columnas}
+
+Una de las principales ventajas del paquete \verb@tabularx@ es la capacidad de crear nuevos tipos de columnas. A continuación veamos un ejemplo de un nuevo formato de columna para texto matemático centrado
+
+\begin{lstlisting}[frame=single]
+\newcolumntype{D}{>{$\displaystyle}c<{$}}
+\newcolumntype{G}{>{\color{red}$\pm$}c}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{>{\centering}m{3.5cm}cG}
+   \toprule
+    \textbf{Ciclo de precipitacion N$^\circ$} &	\textbf{Temperatura} 
+    & \textbf{Tiempo} \\ \midrule
+    1   & $245 \pm 5,5$ &	3 \\[1mm]
+    2	& $260 \pm 5,5$ &	8 \\[1mm]
+    3	& $275 \pm 5,5$ &	8 \\[1mm]
+    4	& $287 \pm 5,5$ &	8 \\
+    \bottomrule
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+\begin{tabular}{>{\centering}m{3.5cm}cG}
+    \toprule
+    \textbf{Ciclo de precipitacion N$^\circ$} &	\textbf{Temperatura} 
+    & \textbf{Tiempo} \\ \midrule
+    1   & $245 \pm 5,5$ &	3 \\[1mm]
+    2	& $260 \pm 5,5$ &	8 \\[1mm]
+    3	& $275 \pm 5,5$ &	8 \\[1mm]
+    4	& $287 \pm 5,5$ &	8 \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+
+\vspace{2cm}
+
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{|>{\columncolor{cyan}}c|c|>{\color{magenta}}c|}
+    \hline
+    \rowcolor{brown}  \textbf{Ciclo N$^\circ$} &
+    \textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+    1   & $245 \pm 5,5$ &	3 \\ \hline
+    2	& $260 \pm 5,5$ &	\cellcolor{yellow} 8 \\ \hline
+    3	& $275 \pm 5,5$ &	8 \\ \hline
+    4	& $287 \pm 5,5$ &	8 \\ \hline
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+  \begin{tabular}{|>{\columncolor{cyan}}c|c|>{\color{magenta}}c|}
+   \hline
+  \textbf{Ciclo N$^\circ$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+    1   & \cellcolor{yellow}$245 \pm 5,5$ &	3 \\ \hline
+    {\color{red}2}	& $260 \pm 5,5$ & 8 \\ \hline
+  \end{tabular}
+\end{center}
+
+\vspace{12pt}
+
+\subsection{Tablas largas (Paquete \emph{longtable})}
+
+Para la creación de este tipo de tablas, necesitamos del paquete \verb@longtable@ y maneja una estructura y sintaxis similar a la de una tabla usual. Sin embargo, este paquete posee una definición más minuciosa de su estructura.
+
+\begin{itemize}
+    \item 
+        \verb@\endfirsthead@ Define el encabezado de la página principal
+    \item
+        \verb@\endhead@
+            Define el encabezado que tendrá la tabla de las siguientes páginas
+    \item
+        \verb@\endfoot@
+            Define el pie que tendrá la tabla en todas las páginas excepto en la última
+    \item
+        \verb@\endlastfoot@
+            Define el pie que tendrá la tabla en la última página
+\end{itemize}
+
+\begin{lstlisting}[frame=single]
+\begin{center}
+\begin{longtable}{lll}
+    \caption{Lista de Estudiantes}\\
+        \toprule
+        \textbf{Nombre}  & \textbf{Carrera}  &  \textbf{Correo Electronico} \\
+        \midrule
+    \endfirsthead
+        \multicolumn{3}{l}{\footnotesize Viene de la pagina anterior}\\
+        \toprule
+        \textbf{Nombre}  & \textbf{Carrera}  &  \textbf{Correo Electronico} \\ \midrule
+    \endhead
+        \bottomrule  \multicolumn{3}{r}{\footnotesize Continua en la siguiente pagina}
+    \endfoot 
+        \bottomrule
+    \endlastfoot
+%  
+    Daniel Lara      &	Matematica	& \url{daniel.lara@alephsub0.com}  \\
+    Daniel Lara      &	Matematica	& \url{daniel.lara@alephsub0.com}  \\
+
+  
+    Daniel Lara      &	Matematica	& \url{daniel.lara@alephsub0.com}  \\
+\end{longtable}
+\end{center}
+\end{lstlisting}
+
+
+\begin{center}
+ \begin{longtable}{lll}
+  \caption{Lista de Estudiantes}\\
+        \toprule
+        \textbf{Nombre}  & \textbf{Carrera}  &  \textbf{Correo Electrónico} \\
+        \midrule
+  \endfirsthead
+        \multicolumn{3}{l}{\footnotesize Viene de la página anterior}\\
+        \toprule
+        \textbf{Nombre}  & \textbf{Carrera}  &  \textbf{Correo Electrónico} \\ \midrule
+  \endhead
+        \bottomrule  \multicolumn{3}{r}{\footnotesize Continua en la siguiente página}
+  \endfoot 
+        \bottomrule
+  \endlastfoot
+%  
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+  Daniel Lara      &	Matemática	& \url{daniel.lara@alephsub0.com}  \\
+ \end{longtable}
+ \end{center}
+
+% \begin{lstlisting}[frame=single]
+% \begin{tabular}{|c|c|c|}
+% \hline
+% \textbf{Ciclo N$^\circ$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+% 1   & 245 5,5 &	3 \\ \hline
+% 2	& 260 5,5 &	8 \\ \hline
+% \end{tabular}
+% \end{lstlisting}
+
+% \begin{center}
+%   \begin{tabular}{|c|c|c|}
+%   \hline
+%     \textbf{Ciclo N$^\circ$} &	\textbf{Temperatura} & \textbf{Tiempo} \\ \hline
+%     1   & 245 5,5 &	3 \\ \hline
+%     2	& 260 5,5 &	8 \\ \hline
+%   \end{tabular}
+% \end{center}
+
+\vspace{12pt}
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{|l*{6}{|c}|r|}
+    \hline
+    Team              & P & W & D & L & F  & A & Pts \\
+    \hline
+    Manchester United & 6 & 4 & 0 & 2 & 10 & 5 & 12  \\
+    Celtic            & 6 & 3 & 0 & 3 &  8 & 9 &  9  \\\hline
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+    \begin{tabular}{|l*{6}{|c}|r|}
+\hline
+Team              & P & W & D & L & F  & A & Pts \\
+\hline
+Manchester United & 6 & 4 & 0 & 2 & 10 & 5 & 12  \\
+Celtic            & 6 & 3 & 0 & 3 &  8 & 9 &  9  \\\hline
+\end{tabular}
+\end{center}
+
+\vspace{18pt}
+
+\begin{lstlisting}[frame=single]
+\begin{tabular}{|c|c|c|}
+    \hline
+     {medidas}{datos} & 0 & 1\\\hline
+    0 & 1 & 2 \\\hline
+    0 & 1 & 2 \\\hline
+    0 & 1 & 2 \\\hline
+\end{tabular}
+\end{lstlisting}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+     {medidas}{datos} & 0 & 1\\\hline
+    0 & 1 & 2 \\\hline
+    0 & 1 & 2 \\\hline
+    0 & 1 & 2 \\\hline
+\end{tabular}
+\end{center}
+
+\end{document} 
+
+

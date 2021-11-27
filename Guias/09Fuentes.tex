@@ -1,0 +1,182 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%% --> Paquetes adicionales
+\usepackage{multicol}
+\usepackage{marginnote}
+\usepackage{metalogo}
+\input{preambulo_material}
+
+% -- Datos del libro
+\nota{Guía 09}
+\tema{Fuentes}
+
+%%--> Opciones adicionales
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Comienzo del documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+
+\tableofcontents
+
+
+\section{Notas adicionales sobre Fuentes}
+
+\subsection{Más tamaños de fuentes}
+
+En ocasiones resulta útil modificar el tamaño de las fuentes más allá de las opciones que \LaTeX{} nos presenta por defecto. Para ello, vamos a emplear el paquete \verb@\usepackage{anyfontsize}@. Este paquete 
+\begin{lstlisting}[frame=single]
+    {\fontsize{18pt}{21.6pt}\selectfont Texto 1 : Aqui puedes colocar algun texto. 
+    Sin embargo, necesitas un texto suficientemente largo para notar la diferencia.
+    \par}
+
+    \bigskip
+    
+    {\fontsize{22pt}{26.4pt}\selectfont Texto 2 :Aqui puedes colocar algun texto. 
+    Sin embargo, necesitas un texto suficientemente largo para notar la diferencia. 
+    \par}
+\end{lstlisting}
+
+{\fontsize{18pt}{21.6pt}\selectfont Texto 1 : Aquí puedes colocar algún texto. Sin embargo, necesitas un texto suficientemente largo para notar la diferencia.\par}
+
+\bigskip
+
+{\fontsize{22pt}{26.4pt}\selectfont Texto 2 :Aquí puedes colocar algún texto. Sin embargo, necesitas un texto suficientemente largo para notar la diferencia. \par}
+
+\subsection{Codificación de fuentes}
+
+Recordemos que los símbolos empleados en la escritura están codificados por una serie de códigos que definen cada uno de ellos, todo esto a manera de un apodo para poder identificarlos. Sin embargo y dependiendo de la codificación que estemos usando podemos incluir cada uno de estos caracteres con el siguiente comando.
+
+\begin{lstlisting}[frame=single]
+    \char60
+\end{lstlisting}
+
+\begin{center}
+{ \fboxsep 12pt
+\fcolorbox {black}{white}{
+\begin{minipage}[t]{0.1\textwidth}
+\centering
+\char60
+\end{minipage}
+} }
+\end{center}
+
+\subsection{Familias de fuentes}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        cmr & \fontfamily{cmr}\selectfont Computer Modern Roman (predeterminada) \\
+        cmss & \fontfamily{cmss}\selectfont Computer Modern Sans\\
+        cmtt & \fontfamily{cmtt}\selectfont Computer Modern Typewriter\\
+        cmm & \fontfamily{cmm}\selectfont Computer Modern Math Italic\\
+        cmsy & \fontfamily{cmsy}\selectfont Computer Modern Math Symbols\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        cmex & \fontfamily{cmex}\selectfont Computer Modern Math Extensions\\
+        ptm &\fontfamily{ptm}\selectfont Adobe Times \\
+        phv & \fontfamily{phv}\selectfont Adobe Helvetica\\
+        pcr & \fontfamily{pcr}\selectfont Adobe Courier\\
+        \hline
+    \end{tabular}
+    \caption{Tabla de familia de fuentes}
+\end{table}
+
+\subsection{Peso de la fuente}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        m & \fontseries{m}\selectfont Medium\\
+        b &\fontseries{b}\selectfont Bold \\
+        bx & \fontseries{bx}\selectfont Bold extended\\
+        sb & \fontseries{sb}\selectfont Semi bold\\
+        c & \fontseries{c}\selectfont condensed \\
+        \hline
+    \end{tabular}
+    \caption{Tabla de peso de las fuentes}
+\end{table}
+
+\subsection{Forma de la fuente}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cl}
+        \hline
+        n & \fontshape{n}\selectfont Normal\\
+        it &\fontshape{it}\selectfont Italic \\
+        sl & \fontshape{sl}\selectfont Slanted (``oblicua'')\\
+        sc & \fontshape{sc}\selectfont Caps and small caps\\
+        \hline
+    \end{tabular}
+    \caption{Tabla de forma de las fuentes}
+\end{table}
+
+\section{Nuevas fuentes}
+
+En esta sección daremos una breve introducción al uso de fuentes nativas del computador. Para su funcionamiento, \LaTeX{} usa las fuentes disponibles en la instalación del compilador, es decir, no accede directamente a las fuentes que se encuentran instaladas en el sistema operativo. Para obtener acceso a las mismas y poder trabajar con ellas es necesario usar un compilador especial, aquí vamos a introducir la compilación con \XeLaTeX{}. Este nuevo motor de compilación introduce el soporte a fuentes TrueType y OpenType, en este curso no se profundiza más sobre este tema pero basta con saber que se refiere a «formatos» de fuentes. Una vez seleccionado el nuevo compilador y verificando la disponibilidad de la fuente, es necesario cargarla en el documento, para ello, primero, cargamos el paquete que nos permite gestionar las nuevas fuentes:
+
+\begin{lstlisting}[frame=single]
+\usepackage{fontspec}
+\end{lstlisting}
+
+Cuando hacemos uso de \XeLaTeX la codificación por defecto soporta el estándar \texttt{UTF-8}. Luego de ello, declaramos la fuente a usar
+
+\begin{lstlisting}[frame=single]
+\setmainfont{Times New Roman}
+\end{lstlisting}
+
+Para el ejemplo declaramos que la nueva fuente a usar es Times New Roman, esta va a reemplazar a Computer Modern que es la familia por defecto en \LaTeX{}. En algunos casos podemos desear escoger fuentes personalizadas para cada estilo disponible, en este caso podemos emplear el siguiente código como ejemplo:
+
+\begin{lstlisting}[frame=single]
+\setromanfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont[Color={0019D4}]{Courier New}
+\end{lstlisting}
+
+La lista completa de fuentes disponibles en Overleaf se puede encontrar en el siguiente enlace: \href{https://es.overleaf.com/learn/latex/Questions/Which\%20OTF\%20or\%20TTF\%20fonts\%20are\%20supported\%20via\%20fontspec\%3F}{Listado de fuentes}. Por otra parte, para descagar nuevas fuentes uno de los repositorios más populares es el proporcionado por Google: \url{https://fonts.google.com/}.
+
+
+Finalmente, en casos particulares podemos requerir usar una fuente no instalada en el compilador, en estos casos debemos disponer de todos los archivos correspondientes a la familia de la fuente a usar. Cargamos los archivos en el directorio y los declaramos. En el siguiente ejemplo se dispone de los siguientes archivos:
+
+\begin{itemize}
+    \item \texttt{BodoniB.ttf}
+    \item \texttt{BodoniI.ttf}
+    \item \texttt{BodoniR.ttf}
+\end{itemize}
+
+Estos archivos corresponden a las diferentes variaciones de la fuente y se las declara con el siguiente código:
+
+\begin{lstlisting}[frame=single]
+\setromanfont[
+BoldFont=BodoniB.ttf,
+ItalicFont=BodoniI.ttf,
+]{BodoniR.ttf}
+\end{lstlisting}
+
+Y, podemos comprobar el resultado con el siguiente código:
+
+\begin{lstlisting}[frame=single]
+Este es un texto en la familia regular de Bodoni MT.
+
+{\it Este es un texto en la familia regular de Bodoni MT.}
+
+{\bf Este es un texto en la familia regular de Bodoni MT.}
+
+\end{lstlisting}
+
+\end{document} 

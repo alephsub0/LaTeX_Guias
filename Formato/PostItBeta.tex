@@ -1,0 +1,107 @@
+\makeatletter
+%%  Keys temporales: |colorlat|
+\def\tcb@@colorlat{colordef!50!black}
+    \tcbset{ colorlat/.code = {\def\tcb@@colorlat{#1} } }
+%%  Estilo de YouTube
+\tcbset{ postitbeta/.style ={
+    % -> Opciones generales
+    breakable,enhanced,
+    before skip=2mm,after skip=3mm,
+    colback=\tcb@@color!50,colframe=\tcb@@color!20!black,
+    boxrule=0.4pt,
+    drop fuzzy shadow,
+    left=6mm,right=2mm,top=0.5mm,bottom=0.5mm,
+    sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
+    parbox=false,
+    underlay unbroken and last = {%
+        \path[fill=tcbcolback!80!black]
+        ([yshift=3mm]interior.south east) --++ (-0.4,-0.1) --++ (0.1,-0.2);
+        \path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm]
+        ([yshift=3mm]interior.south east) --++ (-0.4,-0.1) --++ (0.1,-0.2);
+        \path[fill=\tcb@@colorlat,draw=none]
+        (interior.south west) rectangle node[white]{\tcb@@icono} ([xshift=5.5mm]interior.north west);
+        },
+    underlay = {%
+        \path[fill=\tcb@@colorlat,draw=none]
+        (interior.south west) rectangle node[white]{\tcb@@icono} ([xshift=5.5mm]interior.north west);
+        }
+    }
+    }
+\makeatother
+
+%% Recuadro para enlaces de YouTube
+\definecolor{coloryt}{HTML}{ffcccc}
+\newtcolorbox{tcbyoutube}
+    {icono=\faYoutubePlay,color=coloryt,colorlat=red,postitbeta,colframe=red,leftright skip=1cm}
+    
+%% Comando para enlaces de YouTube
+\newcommand{\YouTube}[4]%
+    {
+        \begin{tcbyoutube}
+            \parbox{0.30\linewidth}{\href{#2}{\includegraphics[width=\linewidth]{#3}}}
+            \hspace{2mm}
+            \parbox{0.65\linewidth}{\footnotesize
+            \textbf{#1}\\[1mm]
+            \faLink\ \url{#2}\\[2mm]
+            \scriptsize
+            #4}
+        \end{tcbyoutube}
+    }
+    
+%% Recuadro para enlaces
+\definecolor{coloren}{HTML}{B9F2BC}
+\newtcolorbox{tcbenlace}
+    {icono=\faLink,color=coloren,postit,leftright skip=1cm,fontupper=\small}
+
+%% Recuadro para impresión
+\definecolor{colorimp}{HTML}{F8F8FF}
+\newtcolorbox{tcbimprimir}
+    {icono=\faPrint,color=colorimp,postit,leftright skip=1cm,fontupper=\small}
+
+%% Ambiente para código
+\definecolor{colcod}{RGB}{174,218,255}
+\newtcolorbox{tcbcodigo}
+    {icono=\faCode,color=colcod,postit,top=-2mm,bottom=-2mm,leftright skip=1cm,fontupper=\small}
+
+%% Ambiente para código LaTeX  
+\usepackage{minted}
+\usemintedstyle{borland}
+\tcbuselibrary{minted}
+\tcbset{listing engine=minted}
+\newtcblisting{tcbLaTeX}{%
+    icono=\faCode,color=colcod,postit,top=0mm,bottom=0mm,
+    leftright skip=1cm,fontupper=\small,
+    minted language=latex,minted style=colorful,
+    listing only}
+% \newtcolorbox{tcbcodigo}
+%     {icono=\faCode,color=colcod,postit,top=-2mm,bottom=-2mm,leftright skip=1cm,fontupper=\small}
+
+%% Ambiente para figuras 
+\newtcolorbox[blend into=figures]{figura}[2][]
+    {float=h,capture=hbox,title={#2},every float=\centering,
+    arc=0mm,left=2mm,right=2mm,
+    boxrule=0pt,
+    colback=colordef!10,
+    colbacktitle=colordef!80,fonttitle=\small,
+    enhanced,attach boxed title to bottom,center title,
+    #1}
+
+%% Ambiente para tablas 
+\newtcolorbox[blend into=tables]{tabla}[2][]
+    {float=h,capture=hbox,title={#2},every float=\centering,
+    arc=0mm,left=2mm,right=2mm,
+    boxrule=0pt,
+    colback=colordef!10,
+    colbacktitle=colordef!80,fonttitle=\small,
+    enhanced,center title,
+    #1}
+
+%% Ambiente para código LaTeX desplegado
+\newtcblisting{tcbLaTeXb}{%
+    icono=\faCode,color=colcod,postit,top=0mm,bottom=0mm,
+    fontupper=\small,
+    minted language=latex,minted style=colorful,listing side text}
+\newtcblisting{tcbLaTeXs}{%
+    icono=\faCode,color=colcod,postit,top=0mm,bottom=0mm,
+    fontupper=\small,
+    minted language=latex,minted style=colorful}

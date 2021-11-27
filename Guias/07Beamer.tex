@@ -1,0 +1,249 @@
+\documentclass[a4,10pt]{aleph-notas}
+
+%%--> Paquetes adicionales
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{subfig}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{multicol}
+\usetikzlibrary{matrix}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{cd}
+
+%%--> Preámbulo del material
+\input{preambulo_material}
+
+% -- Datos del libro
+\nota{Guía 5}
+\tema{Beamer}
+
+
+\begin{document}
+
+\encabezado
+
+\informacion
+
+\tableofcontents
+
+\section{Beamer}
+
+\subsection{Introducción}
+
+La clase \emph{beamer} nos permite generar presentaciones con diapositivas y transparencias, cada diapositiva se conoce como \emph{frame} 
+
+\begin{lstlisting}[frame=single]
+\documentclass{beamer}
+\end{lstlisting}
+
+El desarrollo de una presentación con \emph{beamer} requiere ciertas opciones adicionales pero no dista mucho de la estructura de un documento normal. La primera parte involucra declarar la clase como vimos anteriormente, luego de ello vamos a declarar ciertas opciones de la clase como se detalla a continuación:
+
+\begin{lstlisting}[frame=single]
+\usefonttheme{professionalfonts}
+\usetheme{Warsaw}
+\setbeamercovered{transparent}
+
+\title{Mi primera presentación}
+\subtitle{Parte I}
+\author{Daniel Lara}
+\date{Junio 2007}
+\end{lstlisting}
+
+Luego de ello, comenzamos el documento con el usual \verb@\begin{document}@ y cada diapositiva estará delimitada por el ambiente \verb@frame@, con ello y el siguiente código tenemos nuestra primera presentación:
+
+\begin{lstlisting}[frame=single]
+\begin{document}
+
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Diapositiva 1}
+    Esta es mi primera diapositiva.
+\end{frame}
+
+\end{document}
+\end{lstlisting}
+
+Cuyo resultado es el siguiente:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo01_Página_1.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo01_Página_2.jpg}}}
+\end{figure}
+
+A continuación se encuentra pequeña lista de los temas disponibles en la clase \emph{beamer}
+
+\begin{multicols}{3}
+\begin{itemize}
+    \item Bergen
+    \item Boadilla
+    \item Warsaw
+    \item Hannover
+    \item Luebeck
+    \item AnnArbor
+\end{itemize}
+\end{multicols}
+
+Una lista más completa de los temas se puede encontrar en \href{https://hartwork.org/beamer-theme-matrix/}{https://hartwork.org/beamer-theme-matrix/} y plantillas desarrolladas en Overleaf en la siguiente dirección: \href{https://es.overleaf.com/gallery/tagged/presentation}{https://es.overleaf.com/gallery/tagged/presentation}
+
+\subsection{Velos}
+
+Una de las utilidades de la clase \emph{beamer} es la posibilidad de crear «velos», esto se refiere a una disminución de la opacidad del texto u objeto de tal manera que el observador tiene la sensación de que algo «cubre» es parte de la presentación. 
+
+Una primera forma de utilizar los mismos es recurrir a la opción \verb@[<+->]@ de los ambientes \verb@enumerate@ o \verb@itemize@. Un ejemplo se encuentra a continuación:
+
+\begin{lstlisting}
+\begin{frame}
+\frametitle{Infinitud de los números primos}
+\framesubtitle{Demostración}
+\begin{enumerate}[<+->]
+    \item Supongamos que  $n\in\mathbb{N}$ es el mayor número primo.
+    \item Tomemos $q$ como el producto de todos los números primos hasta llegar a $p$, claramente se tiene que 
+    $q$ no es primo. 
+    \item Se sigue que existen $a$ y $b$ primos mayores que 1 tal que $a\times b = q$.
+    \item Más aún, $a+b$ no es divisible para ninguno de los primos anteriores, pero al ser un número compuesto 
+    es divisible.
+    \item Por reducción al absurdo se concluye que la cantidad de números primos es infinita.
+\end{enumerate}
+\end{frame}
+\end{lstlisting}
+
+Este produce:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_3.jpg}}}
+\hspace{1em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_4.jpg}}}
+\hspace{1em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_5.jpg}}}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_6.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.30\textwidth,clip]{Imagenes/PresentacionEjemplo02jpg_Página_7.jpg}}}
+\end{figure}
+
+\section{Ambientes}
+
+Al igual que en la clase \emph{article}, en la clase \emph{beamer} podemos definir ambientes para facilitar nuestra exposición, para ello basta con declararlos en el preámbulo del documento:
+
+\begin{lstlisting}[frame=single]
+\newtheorem{teo}{Teorema}
+\newtheorem{ejemplo}{Ejemplo}
+\newtheorem{defi}{Definición}
+\newtheorem{coro}{Corolario}
+\newtheorem{prueba}{Prueba}
+\end{lstlisting}
+
+En este punto vamos a introducir el comando \verb@\pause@ este comando permite generar velos en nuestra presentación separando la diapositiva en el punto en el que se introduce el comando, un ejemplo lo podemos ver a continuación
+
+\begin{lstlisting}[frame=single]
+\begin{frame}{Análisis funcional}
+\begin{teo} 
+    Sean $E,F$ espacios de Banach y $T\in\mathcal{L}(E,F)$, si $T$ es sobreyectivo entonces $T$ es abierto.
+\end{teo}
+\pause 
+\begin{coro}
+    Sean $E,F$ espacios de Banach y $T\in\mathcal{L}(E,F)$, si $T$ es biyectivo entonces 
+    $T^{-1}\in\mathcal{L}(E,F)$.
+\end{coro}
+\end{lstlisting}
+
+Este código produce:
+
+\begin{figure}[H]
+\centering
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo03_Página_1.jpg}}}
+\hspace{3em}
+\subfloat{\fbox{\includegraphics[width=0.45\textwidth,clip]{Imagenes/PresentacionEjemplo03_Página_2.jpg}}}
+\end{figure}
+
+\section{Documentos grandes}
+
+Para concluir nuestra guía vamos a analizar el siguiente caso: Los documentos pequeños como un artículo, una carta, etc. no requieren demasiada organización para comprender su contenido. Sin embargo, en la composición de un libro, una tesis o un documento que disponga de varias decenas de hojas, la organización del mismo es un reto. Recordemos que \LaTeX{} debe compilar un documento y este proceso requiere un tiempo para completarse; además, manipular archivos de código tan grandes (varias miles de lineas) puede resultar casi imposible. Para enfrentar esta tarea podemos recurrir una «técnica» de organización de proyecto. Vamos a dividir nuestro documento original en varios archivos que puedan ser «llamados» por un archivo «maestro». 
+
+Consideremos el siguiente ejemplo de código:
+
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+\chapter{Capitulo 1}
+Contenido del capítulo...
+
+\chapter{Capitulo 1}
+Contenido del capítulo...
+
+\end{document}
+\end{lstlisting}
+
+Así, lo que haremos será separar este único archivo «maestro», en tres archivos, dos de contenido y uno auxiliar; estos serán los siguientes 
+
+\medskip
+
+\begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+%% Aqui vamos a incluir
+%% los otros archivos
+
+\end{document}
+\end{lstlisting}
+\end{minipage} \quad \begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\chapter{Capitulo 1}
+Contenido del capítulo...
+\end{lstlisting}
+\end{minipage} \quad \begin{minipage}[c]{0.30\textwidth}
+\begin{lstlisting}[frame=single]
+\chapter{Capitulo 2}
+Contenido del capítulo...
+\end{lstlisting}
+\end{minipage}
+
+Donde el nombre del archivo maestro es: \verb@main.tex@ y los archivos de los capítulos son: \verb@Capitulo01.tex@ y \verb@Capitulo02.tex@, respectivamente.
+
+Ahora, basta saber: ¿cómo incluimos los archivos adicionales?. Para esta tarea disponemos de los comandos: 
+
+\begin{itemize}
+    \item \verb@\input{@\emph{nombre del archivo}\verb@}@ incluye el contenido del archivo exactamente en el lugar en el que se encuentra el comando sin modificar los espacios.
+    \item \verb@\include{@\emph{nombre del archivo}\verb@}@ incluye el contenido del archivo exactamente en el lugar en el que se encuentra el comando pero agrega un salto de página adelante y atrás del punto donde se incluye el contenido.
+\end{itemize}
+
+Con esto, nuestro archivo maestro tendría la siguiente forma, usando el comando \verb@\input@
+
+\begin{lstlisting}[frame=single]
+\documentclass{book}
+
+%% Preambulo
+
+\begin{document}
+
+% Incluye el capitulo 1
+\input{Capitulo01}
+% Incluye el capitulo 2
+\input{Capitulo01}
+
+\end{document}
+\end{lstlisting}
+
+\begin{obs}
+La organización al momento de crear un documento es de vital importancia es por esto que además de separar el documento principal, es posible organizar todos los contenidos del proyecto en carpetas que faciliten su manejo.
+\end{obs}
+
+\end{document} 
